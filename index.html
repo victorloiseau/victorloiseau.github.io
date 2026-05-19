@@ -1,1 +1,412 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Victor Loiseau</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+    :root {
+      --bg: #f5f4f0;
+      --white: #ffffff;
+      --dark: #111110;
+      --mid: #444442;
+      --muted: #999997;
+      --border: #e2e0d8;
+      --gold: #c9a84c;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--dark);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      padding: 60px 16px 100px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 460px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      animation: fadeUp 0.6s ease both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* PROFILE */
+    .profile-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 40px 32px 32px;
+      text-align: center;
+      position: relative;
+    }
+
+    .top-bar {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--gold), #e8c97a, var(--gold));
+      border-radius: 20px 20px 0 0;
+    }
+
+    .avatar {
+      width: 88px; height: 88px;
+      border-radius: 50%;
+      background: var(--dark);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      color: var(--gold);
+      margin: 0 auto 18px;
+      letter-spacing: 1px;
+    }
+
+    .name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.65rem; font-weight: 700;
+      color: var(--dark); margin-bottom: 10px;
+    }
+
+    .badges {
+      display: flex; justify-content: center; flex-wrap: wrap;
+      gap: 6px; margin-bottom: 16px;
+    }
+
+    .badge {
+      background: var(--bg); border: 1px solid var(--border);
+      color: var(--mid); font-size: 0.68rem; font-weight: 500;
+      letter-spacing: 1.2px; text-transform: uppercase;
+      padding: 4px 11px; border-radius: 100px;
+    }
+
+    .badge.gold {
+      background: #fdf7eb; border-color: #e8c97a; color: #9a6f1a;
+    }
+
+    .bio {
+      font-size: 0.87rem; color: var(--mid);
+      line-height: 1.72; font-weight: 300;
+    }
+
+    /* SECTION LABEL */
+    .section-label {
+      font-size: 0.67rem; font-weight: 500; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--muted);
+      padding: 0 4px; margin-top: 6px;
+    }
+
+    /* TIMELINE */
+    .timeline-card {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 16px; padding: 26px 24px;
+    }
+
+    .timeline-item { display: flex; gap: 16px; }
+    .timeline-item:not(:last-child) { padding-bottom: 22px; }
+
+    .timeline-left {
+      display: flex; flex-direction: column; align-items: center;
+      flex-shrink: 0; width: 14px;
+    }
+
+    .tl-dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      background: var(--gold); flex-shrink: 0; margin-top: 5px;
+    }
+
+    .tl-line {
+      flex: 1; width: 1px; background: var(--border); margin-top: 5px;
+    }
+
+    .tl-content { flex: 1; }
+
+    .tl-date {
+      font-size: 0.68rem; font-weight: 500; letter-spacing: 1px;
+      text-transform: uppercase; color: var(--gold); margin-bottom: 3px;
+    }
+
+    .tl-title {
+      font-size: 0.9rem; font-weight: 500;
+      color: var(--dark); margin-bottom: 3px;
+    }
+
+    .tl-sub {
+      font-size: 0.78rem; color: var(--muted);
+      font-weight: 300; line-height: 1.55;
+    }
+
+    /* HEC CARD */
+    .hec-card {
+      background: var(--dark); border-radius: 16px;
+      padding: 26px 28px; position: relative; overflow: hidden;
+    }
+
+    .hec-card::before {
+      content: ''; position: absolute;
+      top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--gold), #e8c97a);
+    }
+
+    .hec-eyebrow {
+      font-size: 0.67rem; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 10px; font-weight: 500;
+    }
+
+    .hec-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem; color: #fff; margin-bottom: 8px;
+    }
+
+    .hec-sub {
+      font-size: 0.8rem; color: #888;
+      font-weight: 300; line-height: 1.65;
+    }
+
+    .hec-tag {
+      display: inline-block; margin-top: 14px;
+      background: rgba(201,168,76,0.15);
+      border: 1px solid rgba(201,168,76,0.3);
+      color: var(--gold); font-size: 0.7rem; letter-spacing: 1px;
+      text-transform: uppercase; padding: 4px 12px;
+      border-radius: 100px; font-weight: 500;
+    }
+
+    /* SKILLS */
+    .skills-card {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 16px; padding: 22px 24px;
+      display: flex; flex-wrap: wrap; gap: 8px;
+    }
+
+    .skill-pill {
+      background: var(--bg); border: 1px solid var(--border);
+      color: var(--mid); font-size: 0.78rem;
+      font-weight: 400; padding: 6px 14px; border-radius: 100px;
+    }
+
+    .skill-pill.featured {
+      background: #fdf7eb; border-color: #e8c97a;
+      color: #9a6f1a; font-weight: 500;
+    }
+
+    /* LINK CARD */
+    .link-card {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 14px; display: flex; align-items: center;
+      gap: 14px; padding: 15px 20px;
+      text-decoration: none; color: var(--dark);
+      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+    }
+
+    .link-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.07);
+      border-color: #c9c7be;
+    }
+
+    .link-icon {
+      width: 40px; height: 40px; border-radius: 10px;
+      background: var(--bg); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; font-size: 1.1rem;
+    }
+
+    .link-text { flex: 1; }
+    .link-title { font-size: 0.88rem; font-weight: 500; color: var(--dark); margin-bottom: 2px; }
+    .link-sub { font-size: 0.73rem; color: var(--muted); font-weight: 300; }
+    .link-arrow { color: var(--muted); font-size: 0.85rem; transition: transform 0.18s; }
+    .link-card:hover .link-arrow { transform: translateX(3px); }
+
+    /* CONTACT */
+    .contact-card {
+      background: var(--dark); border-radius: 16px;
+      padding: 24px 28px; display: flex; flex-direction: column; gap: 14px;
+    }
+
+    .contact-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem; color: var(--white);
+    }
+
+    .contact-item {
+      display: flex; align-items: center; gap: 12px; text-decoration: none;
+    }
+
+    .contact-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--gold); flex-shrink: 0;
+    }
+
+    .contact-value {
+      font-size: 0.83rem; color: #aaa;
+      font-weight: 300; transition: color 0.15s;
+    }
+
+    .contact-item:hover .contact-value { color: var(--white); }
+
+    /* FOOTER */
+    .footer {
+      text-align: center; font-size: 0.69rem;
+      color: var(--muted); letter-spacing: 0.5px; padding-top: 4px;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- PROFIL -->
+  <div class="profile-card">
+    <div class="top-bar"></div>
+    <div class="avatar">VL</div>
+    <div class="name">Victor Loiseau</div>
+    <div class="badges">
+      <span class="badge">18 ans</span>
+      <span class="badge">Lycée Marcelin Berthelot</span>
+      <span class="badge gold">✦ HEC Montréal · BBA 2026</span>
+    </div>
+    <p class="bio">
+      Lycéen en Terminale — spécialité SES &amp; Mathématiques. Admis au BBA d'HEC Montréal pour septembre 2026. Curieux, rigoureux et ouvert sur le monde, avec une première expérience en entreprise et un séjour international.
+    </p>
+  </div>
+
+  <!-- PARCOURS -->
+  <div class="section-label">Parcours &amp; expériences</div>
+
+  <div class="timeline-card">
+
+    <div class="timeline-item">
+      <div class="timeline-left">
+        <div class="tl-dot"></div>
+        <div class="tl-line"></div>
+      </div>
+      <div class="tl-content">
+        <div class="tl-date">Sept. 2026</div>
+        <div class="tl-title">BBA — HEC Montréal</div>
+        <div class="tl-sub">Bachelor of Business Administration avec année préparatoire · Montréal, Canada</div>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-left">
+        <div class="tl-dot"></div>
+        <div class="tl-line"></div>
+      </div>
+      <div class="tl-content">
+        <div class="tl-date">Été 2025</div>
+        <div class="tl-title">Séjour linguistique — Brighton, Royaume-Uni</div>
+        <div class="tl-sub">2 semaines d'immersion en anglais · Découverte de la culture britannique</div>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-left">
+        <div class="tl-dot"></div>
+        <div class="tl-line"></div>
+      </div>
+      <div class="tl-content">
+        <div class="tl-date">Seconde · 2023–2024</div>
+        <div class="tl-title">Stage d'observation — FDG Group</div>
+        <div class="tl-sub">2 semaines · Découverte du monde de l'entreprise et de ses métiers</div>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-left">
+        <div class="tl-dot"></div>
+      </div>
+      <div class="tl-content">
+        <div class="tl-date">3ème · 2022–2023</div>
+        <div class="tl-title">Stage d'observation — Nestlé</div>
+        <div class="tl-sub">1 semaine · Immersion dans un grand groupe international de l'agroalimentaire</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- HEC HIGHLIGHT -->
+  <div class="hec-card">
+    <div class="hec-eyebrow">Prochaine étape</div>
+    <div class="hec-title">HEC Montréal — BBA</div>
+    <div class="hec-sub">
+      Intégration en septembre 2026 avec année préparatoire. HEC Montréal est l'une des meilleures écoles de gestion francophones au monde, reconnue internationalement pour l'excellence de ses programmes en commerce et management.
+    </div>
+    <div class="hec-tag">🎓 Admis · Rentrée Sept. 2026</div>
+  </div>
+
+  <!-- COMPÉTENCES -->
+  <div class="section-label">Compétences &amp; atouts</div>
+
+  <div class="skills-card">
+    <span class="skill-pill featured">Sciences Éco. &amp; Sociales</span>
+    <span class="skill-pill featured">Mathématiques</span>
+    <span class="skill-pill">Anglais</span>
+    <span class="skill-pill">Analyse économique</span>
+    <span class="skill-pill">Gestion &amp; Business</span>
+    <span class="skill-pill">Esprit d'initiative</span>
+    <span class="skill-pill">International</span>
+    <span class="skill-pill">Curiosité</span>
+  </div>
+
+  <!-- RÉSEAUX -->
+  <div class="section-label">Réseaux</div>
+
+  <a class="link-card" href="data:application/pdf;base64,JVBERi0xLjQKJZOMi54gUmVwb3J0TGFiIEdlbmVyYXRlZCBQREYgZG9jdW1lbnQgKG9wZW5zb3VyY2UpCjEgMCBvYmoKPDwKL0YxIDIgMCBSIC9GMiAzIDAgUgo+PgplbmRvYmoKMiAwIG9iago8PAovQmFzZUZvbnQgL0hlbHZldGljYSAvRW5jb2RpbmcgL1dpbkFuc2lFbmNvZGluZyAvTmFtZSAvRjEgL1N1YnR5cGUgL1R5cGUxIC9UeXBlIC9Gb250Cj4+CmVuZG9iagozIDAgb2JqCjw8Ci9CYXNlRm9udCAvSGVsdmV0aWNhLUJvbGQgL0VuY29kaW5nIC9XaW5BbnNpRW5jb2RpbmcgL05hbWUgL0YyIC9TdWJ0eXBlIC9UeXBlMSAvVHlwZSAvRm9udAo+PgplbmRvYmoKNCAwIG9iago8PAovQ29udGVudHMgOCAwIFIgL01lZGlhQm94IFsgMCAwIDU5NS4yNzU2IDg0MS44ODk4IF0gL1BhcmVudCA3IDAgUiAvUmVzb3VyY2VzIDw8Ci9Gb250IDEgMCBSIC9Qcm9jU2V0IFsgL1BERiAvVGV4dCAvSW1hZ2VCIC9JbWFnZUMgL0ltYWdlSSBdCj4+IC9Sb3RhdGUgMCAvVHJhbnMgPDwKCj4+IAogIC9UeXBlIC9QYWdlCj4+CmVuZG9iago1IDAgb2JqCjw8Ci9QYWdlTW9kZSAvVXNlTm9uZSAvUGFnZXMgNyAwIFIgL1R5cGUgL0NhdGFsb2cKPj4KZW5kb2JqCjYgMCBvYmoKPDwKL0F1dGhvciAoXChhbm9ueW1vdXNcKSkgL0NyZWF0aW9uRGF0ZSAoRDoyMDI2MDUxOTE0NTc0NiswMCcwMCcpIC9DcmVhdG9yIChcKHVuc3BlY2lmaWVkXCkpIC9LZXl3b3JkcyAoKSAvTW9kRGF0ZSAoRDoyMDI2MDUxOTE0NTc0NiswMCcwMCcpIC9Qcm9kdWNlciAoUmVwb3J0TGFiIFBERiBMaWJyYXJ5IC0gXChvcGVuc291cmNlXCkpIAogIC9TdWJqZWN0IChcKHVuc3BlY2lmaWVkXCkpIC9UaXRsZSAoXChhbm9ueW1vdXNcKSkgL1RyYXBwZWQgL0ZhbHNlCj4+CmVuZG9iago3IDAgb2JqCjw8Ci9Db3VudCAxIC9LaWRzIFsgNCAwIFIgXSAvVHlwZSAvUGFnZXMKPj4KZW5kb2JqCjggMCBvYmoKPDwKL0ZpbHRlciBbIC9BU0NJSTg1RGVjb2RlIC9GbGF0ZURlY29kZSBdIC9MZW5ndGggMjM5MQo+PgpzdHJlYW0KR2IhI11iQkRWdSZEZDQ2QWxVP0UoLjNXQFklZj5paXVDOHI4UC1QQCJzdEpzI3AwTEdcQlImNXBeUjplVTEyNjFDRipnO01qPVghbz0val0jOW1SOSYoLlMjIyZsPk9RX3NybEwkOVM1Q1VsLjRKQzQjSWxOKF1oSEBdWCthLzlJT2UtXlZyaSZuWWhmZm9CQ1RRZDVgbFRyJ0BeYm5eWFFtJl9DUmMtVV47Ikc2dSpeUDIqJEFoLGlgJiolXTdoTz9BI29BO28zMFEiJ3FBSDBGaW5VcT1CXCVQLmZqcE5mcC5fPEE4X3FvKTZnRU1hTj5mXl1IYjNwWDdrTyM7WF5TLTVRNmpgcE80NW9zLz9hV2ZFLG90LTFKLmFvMU85NGs3Oik8cSEpJEM6WTpdPHFoNixNPUhkK04/KStQcHAjdCZmI1lAQHU/IyJRaG1tO0JmITxsYFpdOWcjQ2pIYlYzaC07bD9IMF43PDpfNEErOlVhI2lVJzlUPmIwMUdsZzlISCpVTEheUTRMZVoiOV1ubUNMbnA1USZBMyE+LjIqPElqOGQxckBmY1k8SjA9bCwoXUNBLUcqNyZaOkUiTDNGXk1xUVMiIlFYVyoiT1VYR1xHSlFbJS5LQkIqWXRSLDZLa00oOFteV0RjMnM9SS9uODUmKG4+V3BHZC5zIS9FKGwkcjQiSFFjSVNIbGA4VVsjTWNVMDxALiQyU15vOyIjbj9Db0AxXiFbXzVlTy1oQG1RbS9PLHNBIUMtKCJsZUQ5RW5fbmg2WTgmdHBxRzQvJ01BXitwJlpKIixAJT1JcicyUGxgTWBJPEs5JyFYYmkmSmhIL3VsS25bNCQoNiJJQD0hS2RuJmFOcTZMIUt1NmZUY0JALlo2QmxrNTBIRUJiNEkpR15qcktaS1pwYyU8bHVkXTdbQjc/SEM0KzZwJEtiMVRBU2hJVVdTYDhOSUlLRDsnVEVyXkhyMGpWTF87QW5hYyslT3FLVGYkPSQ5NDRIRzlvKklSI3FKQ2RzP0tyOmFsXT1jMDtTaDYoMVtYcjdmczkrPSczOUQoMVkvLz5SZFBmW1M/XVM5J1tJbzdBISNjYihrPSRIcEQ1MTUyT0ZhdWMqMzYnNiRVb11YMi5vSiI2YDxOISVYR2YuUDJPczlCPF0qdEkjO3FiPC5JJnEzMztXNyZiVFVNRTUuWiZvM0k8XiE0cm0/RTg8ZDJOTWk2IURFT3RlIURackBlMCJvWCFYb0ZVZUU7KjwzKypqR3MscUJbXzwoOGFAVG9jYU5lRiEnUkQkcEMpRllNTig5Pm9TOC1tXnVoNylLNVZQRXRyKkEoNF8+PiFcbyZtVFA2KkBjP1RhciNfR1kpNTdwUXI9KCIvVTgyInQxT15rNjRCLk5cJy4iVGReOUtfMixSPUMmPichNVInOGM4JVV1IzhAJEJkY0VGLDNiR3BYTFc/TEtkZGQ+dSFuT1c5WiVkZDttPmIqIShvNzlkJFhoMitEPW1FTk5uJWlLLGZDSCMhJS5aZUZHOXA6UChSOjdndUopaDtyOktrU1t1PEdBY2lBUnMmLGFnRDQuYjdjMSRSQjI9WmFNZGUjRl8uVD1uKDYoTEtJcHNRL2dnVSFfK11OLj02XTRcUyE8NF1CLSRuXyIjY2RMJyZDRjtBNk8jU1FmODhkWGsxXycsNiJtMlE0TmRZM2UnJzohIkpvSiVGQDhDXm5iUU1fJTxmSWpLPEROP0pfLSRoOC9AQTFINmxtXF9LN2VDX1Q6MmpaJyZHIixjYSNsdSx1N2ZKZklwNl5zL0lnbSdFb1MkR0RwJzV0WVwzbVRRZjxaMl9eNidXTV5yKVQlTlNzcWNJUUdqaERXKStTM1JLUiNsaWVbaFpXOlYtPFFJdCYxZiswQ0xtNikrXzVMSEtrZEYmamBRJ0dnSE45K2xMNFs8bUcvQlMsYCQjUlsjKU4nSElgKlRSNkldK2FXV3RgYF80RTg4JVpkQ2o4ZWZrbVE3YzVMOFs2bi1MYV4hSC8xMFI9Mlphb1VcXE5ZKTEiUGp1cFJnVWgwMXMsSDNaXHEzPV9fbUddaUk+K209JUksK28pR1c7MyVqO1BAOTtLTGcnYjcsMCUtJnJXSCtvO28oPlM4PSNuRlxyQmZsRDNkO3BvTWBlLjI9NkJJdSgrOS9UO100NFgwYDJYPiM7cUIlZTYvcWpHUEI8WGhcVVNfayZdQT9rUkJVZilXLy1aXmpmOWVpPjVnWUh1VDonWiwiWGZRLE8/OE5pRlFTYjVNYDM4T0xNMDMrSGtaTkdcYCFiTENTSXMkWixNXCg7X0FFLGc+THA+TEJTNGIqSz9bIkZBJ11eWjQ2STA9RytyTU5gc1xyKFoqTk9PW14/KTtLJiNqY1krWjFydGJsajFWTTJeVT1Fci9fOiwoXyU9Z15xZUlYQy1SVzdDb01acTdgNmVoUVMyNU5IOkxSbzxDSkMjIyNYMjJrb15lT1M0UF02TnRZKzpfYFdRQzRHblFpZ0crUS1eOD5vITVNWXAiNmNVRzs7XWIqNmExKHJtR1JjY0E/IWxsT0ZLNTVjYSYyKERJYE4kYkFbYWtqWUo2YzBIYnFOKzBiVzxPTU0hJ0RWPV1tKWkicWNVNWZkSGNqNExtNzFybSVeUE0yNVQwYG5COGNxO0UlX2AiIig6Lm9jUjcmbHA0V0pzWDQ8a1g/UTFuU2ROXkhcWkxtJk0+UjphM2deYkExUT1oNzElMS1aMj1uK0c8S1JUdCwvWlwiRC40XyEwaHEuO2ZxQWQ0IjowLWFAazg7Jm84VUc2XjoqSDQzOUAtLUswISJVS3UjM1ZCPzghXCRZaUQ2ITxdSVktOF0xdC5uKytZR1dgRC1aRy0scUVnLG9bYTg9RUg+KDk1cUhPU19BLXAyPyhnPkc/Mj9iTVhiSF5WYlY/XHROXmpiLUk8XjJ1ZVJyKFw2RHFISmkqIm90OVlELDNlcGdgY2hsbzVSQDszOy08PDkmRCRCbDQmbnRuRExSRkRLQmYpK187ZSZYJFJsdWcmXl88KzBjZkdTKCNuYUBjQUQjMFtAU0ZMJ0BeSmNJLmgzWElwWkFQSj1dQGxFM11AJVpIUyg7LW9lITwlV28uJFU7NTh0XmwtKCFeai8pNlNXKERXNzkmR0kvcks3PGs/YW9OXn4+ZW5kc3RyZWFtCmVuZG9iagp4cmVmCjAgOQowMDAwMDAwMDAwIDY1NTM1IGYgCjAwMDAwMDAwNjEgMDAwMDAgbiAKMDAwMDAwMDEwMiAwMDAwMCBuIAowMDAwMDAwMjA5IDAwMDAwIG4gCjAwMDAwMDAzMjEgMDAwMDAgbiAKMDAwMDAwMDUyNCAwMDAwMCBuIAowMDAwMDAwNTkyIDAwMDAwIG4gCjAwMDAwMDA4NzIgMDAwMDAgbiAKMDAwMDAwMDkzMSAwMDAwMCBuIAp0cmFpbGVyCjw8Ci9JRCAKWzxmODk5MGEwZjQ0ZWEwYTdmNmUzOTBlODVkNTVhNTY3ZT48Zjg5OTBhMGY0NGVhMGE3ZjZlMzkwZTg1ZDU1YTU2N2U+XQolIFJlcG9ydExhYiBnZW5lcmF0ZWQgUERGIGRvY3VtZW50IC0tIGRpZ2VzdCAob3BlbnNvdXJjZSkKCi9JbmZvIDYgMCBSCi9Sb290IDUgMCBSCi9TaXplIDkKPj4Kc3RhcnR4cmVmCjM0MTMKJSVFT0YK" download="CV_Victor_Loiseau.pdf">
+    <div class="link-icon">📄</div>
+    <div class="link-text">
+      <div class="link-title">Mon CV</div>
+      <div class="link-sub">Télécharger en PDF</div>
+    </div>
+    <div class="link-arrow">↓</div>
+  </a>
+
+  <a class="link-card" href="https://www.linkedin.com/in/victor-loiseau-619b1021b" target="_blank">
+    <div class="link-icon">💼</div>
+    <div class="link-text">
+      <div class="link-title">LinkedIn</div>
+      <div class="link-sub">Victor Loiseau</div>
+    </div>
+    <div class="link-arrow">→</div>
+  </a>
+
+
+
+  <a class="link-card" href="mailto:victor.loiseau2405@gmail.com">
+    <div class="link-icon">✉️</div>
+    <div class="link-text">
+      <div class="link-title">Email</div>
+      <div class="link-sub">victor.loiseau2405@gmail.com</div>
+    </div>
+    <div class="link-arrow">→</div>
+  </a>
+
+  <!-- CONTACT -->
+  <div class="section-label">Contact</div>
+
+  <div class="contact-card">
+    <div class="contact-title">Me contacter</div>
+    <a class="contact-item" href="mailto:victor.loiseau2405@gmail.com">
+      <div class="contact-dot"></div>
+      <span class="contact-value">victor.loiseau2405@gmail.com</span>
+    </a>
+    <a class="contact-item" href="#">
+      <div class="contact-dot"></div>
+      <span class="contact-value">France · Montréal dès sept. 2026</span>
+    </a>
+  </div>
+
+  <div class="footer">© 2026 · Victor Loiseau</div>
+
+</div>
+</body>
+</html>
