@@ -108,20 +108,12 @@
     .avatar {
       width: 88px; height: 88px;
       border-radius: 50%;
-      background: var(--dark);
-      display: flex; align-items: center; justify-content: center;
-      font-family: 'Playfair Display', serif;
-      font-size: 1.8rem;
-      color: var(--gold);
+      border: 2px solid var(--gold);
       margin: 0 auto 18px;
-      letter-spacing: 1px;
-      overflow: hidden;
-    }
-
-    .avatar img {
-      width: 100%; height: 100%;
-      object-fit: cover;
-      border-radius: 50%;
+      background-image: url('photo.jpg');
+      background-size: 130%;
+      background-position: center 35%;
+      background-repeat: no-repeat;
     }
 
     .name {
@@ -359,7 +351,7 @@
   <!-- PROFIL -->
   <div class="profile-card" id="profil">
     <div class="top-bar"></div>
-    <div class="avatar"><img src="photo.jpg" alt="Victor Loiseau"/></div>
+    <div class="avatar"></div>
     <div class="name">Victor Loiseau</div>
     <div class="badges">
       <span class="badge">18 ans</span>
