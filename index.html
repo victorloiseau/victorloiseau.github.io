@@ -3,529 +3,483 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="description" content="Victor Loiseau — Lycéen en Terminale, admis au BBA d'HEC Montréal pour septembre 2026. Spécialité SES & Mathématiques."/>
+  <meta name="description" content="Victor Loiseau, bachelier mention Bien, admis au BBA d'HEC Montreal. Depart pour Montreal en aout 2026."/>
   <meta property="og:title" content="Victor Loiseau"/>
-  <meta property="og:description" content="Lycéen en Terminale, admis au BBA d'HEC Montréal pour septembre 2026."/>
+  <meta property="og:description" content="Bachelier mention Bien, admis au BBA d'HEC Montreal. Depart pour Montreal en aout 2026."/>
   <meta property="og:type" content="website"/>
   <meta property="og:url" content="https://victorloiseau.github.io"/>
   <title>Victor Loiseau</title>
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23111110'/><text x='50' y='68' text-anchor='middle' font-family='Georgia,serif' font-size='40' fill='%23c9a84c' font-weight='bold'>VL</text></svg>"/>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='14' fill='%23111318'/><text x='50' y='66' text-anchor='middle' font-family='Georgia,serif' font-size='38' fill='%23ffffff' font-weight='bold'>VL</text></svg>"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@600;700&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg: #f5f4f0;
+      --bg: #fbfbfa;
       --white: #ffffff;
-      --dark: #111110;
-      --mid: #444442;
-      --muted: #999997;
-      --border: #e2e0d8;
-      --gold: #c9a84c;
+      --ink: #14151a;
+      --mid: #45464c;
+      --muted: #6c6d72;
+      --border: #e4e3df;
+      --accent: #9a6a2f;
+      --accent-strong: #14151a;
+      --dark: #111318;
+      --radius: 8px;
+      --container: 980px;
     }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0c0d10;
+        --white: #16171b;
+        --ink: #eeeeec;
+        --mid: #bdbdb9;
+        --muted: #8d8d89;
+        --border: #26272c;
+        --accent: #c99a5b;
+        --accent-strong: #eeeeec;
+        --dark: #050506;
+      }
+    }
+
+    html { color-scheme: light dark; }
 
     body {
       background: var(--bg);
-      color: var(--dark);
-      font-family: 'Inter', sans-serif;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      padding: 60px 16px 100px;
+      color: var(--ink);
+      font-family: 'Manrope', sans-serif;
+      -webkit-font-smoothing: antialiased;
     }
 
-    .container {
-      width: 100%;
-      max-width: 460px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      animation: fadeUp 0.6s ease both;
-    }
+    .wrap { max-width: var(--container); margin: 0 auto; padding: 0 24px; }
 
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(24px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    /* STICKY NAV */
-    .sticky-nav {
-      position: fixed;
-      top: 16px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(17,17,16,0.88);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border: 1px solid rgba(201,168,76,0.25);
-      border-radius: 100px;
-      padding: 8px 20px;
-      display: flex;
-      gap: 20px;
-      z-index: 100;
+    .reveal {
       opacity: 0;
-      transition: opacity 0.3s ease, transform 0.3s ease;
-      pointer-events: none;
-      transform: translateX(-50%) translateY(-8px);
+      transform: translateY(14px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .reveal.in { opacity: 1; transform: translateY(0); }
+
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity: 1; transform: none; transition: none; }
     }
 
-    .sticky-nav.visible {
-      opacity: 1;
-      pointer-events: all;
-      transform: translateX(-50%) translateY(0);
+    /* NAV */
+    .top-nav {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+    }
+    .top-nav .wrap {
+      display: flex; align-items: center; justify-content: space-between;
+      height: 64px;
+    }
+    .nav-name { font-weight: 700; font-size: 0.95rem; color: var(--ink); text-decoration: none; }
+    .nav-links { display: flex; align-items: center; gap: 28px; }
+    .nav-links a {
+      font-size: 0.84rem; font-weight: 500; color: var(--mid); text-decoration: none;
+    }
+    .nav-links a:hover { color: var(--ink); }
+    .nav-links .nav-cv {
+      color: var(--white); background: var(--accent-strong);
+      padding: 8px 16px; border-radius: var(--radius);
+    }
+    .nav-links .nav-cv:hover { opacity: 0.85; color: var(--white); }
+
+    @media (max-width: 620px) {
+      .nav-links a:not(.nav-cv) { display: none; }
     }
 
-    .sticky-nav a {
-      font-size: 0.72rem;
-      font-weight: 500;
-      letter-spacing: 1.2px;
-      text-transform: uppercase;
-      color: #aaa;
+    /* HERO */
+    .hero {
+      padding: 64px 0 56px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .hero-role {
+      font-size: 0.86rem; font-weight: 600; color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    .hero h1 {
+      font-family: 'Source Serif 4', serif;
+      font-weight: 700;
+      font-size: clamp(2rem, 3.6vw, 2.75rem);
+      line-height: 1.12;
+      color: var(--ink);
+      margin-bottom: 14px;
+    }
+
+    .hero-bio {
+      font-size: 1rem; color: var(--mid);
+      line-height: 1.65; font-weight: 300;
+      max-width: 56ch; margin-bottom: 22px;
+    }
+
+    .hero-facts {
+      display: flex; flex-wrap: wrap; gap: 8px 24px;
+      margin-bottom: 26px;
+      padding-top: 18px;
+      border-top: 1px solid var(--border);
+    }
+    .hero-fact { font-size: 0.82rem; color: var(--mid); }
+    .hero-fact strong { color: var(--ink); font-weight: 600; }
+
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-weight: 600; font-size: 0.86rem;
+      padding: 11px 18px; border-radius: var(--radius);
       text-decoration: none;
-      transition: color 0.15s;
+      transition: opacity 0.15s, transform 0.15s;
+      border: 1px solid transparent;
+    }
+    .btn:active { transform: scale(0.98); }
+    .btn-primary { background: var(--accent-strong); color: var(--white); }
+    .btn-primary:hover { opacity: 0.86; }
+    .btn-outline { background: transparent; color: var(--ink); border-color: var(--border); }
+    .btn-outline:hover { border-color: var(--mid); }
+
+    @media (max-width: 680px) {
+      .hero { text-align: center; }
+      .hero-bio { margin-left: auto; margin-right: auto; }
+      .hero-facts { justify-content: center; }
+      .hero-actions { justify-content: center; }
     }
 
-    .sticky-nav a:hover { color: var(--gold); }
+    /* SECTIONS */
+    section { padding: 52px 0; border-bottom: 1px solid var(--border); }
+    section:last-of-type { border-bottom: none; }
 
-    /* PROFILE */
-    .profile-card {
-      background: var(--white);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 40px 32px 32px;
-      text-align: center;
-      position: relative;
-    }
-
-    .top-bar {
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, var(--gold), #e8c97a, var(--gold));
-      border-radius: 20px 20px 0 0;
-    }
-
-    .avatar {
-      width: 88px; height: 88px;
-      border-radius: 50%;
-      border: 2px solid var(--gold);
-      margin: 0 auto 18px;
-      background-image: url('photo.jpg');
-      background-size: 130%;
-      background-position: center 35%;
-      background-repeat: no-repeat;
-    }
-
-    .name {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.65rem; font-weight: 700;
-      color: var(--dark); margin-bottom: 10px;
-    }
-
-    .badges {
-      display: flex; justify-content: center; flex-wrap: wrap;
-      gap: 6px; margin-bottom: 16px;
-    }
-
-    .badge {
-      background: var(--bg); border: 1px solid var(--border);
-      color: var(--mid); font-size: 0.68rem; font-weight: 500;
-      letter-spacing: 1.2px; text-transform: uppercase;
-      padding: 4px 11px; border-radius: 100px;
-    }
-
-    .badge.gold {
-      background: #fdf7eb; border-color: #e8c97a; color: #9a6f1a;
-    }
-
-    .bio {
-      font-size: 0.87rem; color: var(--mid);
-      line-height: 1.72; font-weight: 300;
-    }
-
-    /* SECTION LABEL */
-    .section-label {
-      font-size: 0.67rem; font-weight: 500; letter-spacing: 2px;
+    .section-head { margin-bottom: 28px; }
+    .section-head h2 {
+      font-size: 0.78rem; font-weight: 700; letter-spacing: 0.6px;
       text-transform: uppercase; color: var(--muted);
-      padding: 0 4px; margin-top: 6px;
     }
+
+    /* ABOUT */
+    .about-text {
+      font-size: 0.98rem; color: var(--mid); line-height: 1.8; font-weight: 300;
+      max-width: 68ch;
+    }
+    .about-text strong { color: var(--ink); font-weight: 600; }
 
     /* TIMELINE */
-    .timeline-card {
-      background: var(--white); border: 1px solid var(--border);
-      border-radius: 16px; padding: 26px 24px;
+    .timeline-item {
+      display: grid;
+      grid-template-columns: 160px 1fr;
+      gap: 24px;
+      padding: 20px 0;
+    }
+    .timeline-item:not(:last-child) { border-bottom: 1px solid var(--border); }
+    .timeline-item:first-child { padding-top: 0; }
+
+    .tl-date { font-size: 0.82rem; font-weight: 500; color: var(--muted); padding-top: 2px; }
+    .tl-title { font-size: 1rem; font-weight: 700; color: var(--ink); margin-bottom: 5px; }
+    .tl-sub { font-size: 0.88rem; color: var(--mid); font-weight: 300; line-height: 1.6; max-width: 54ch; }
+
+    @media (max-width: 620px) {
+      .timeline-item { grid-template-columns: 1fr; gap: 4px; }
     }
 
-    .timeline-item { display: flex; gap: 16px; }
-    .timeline-item:not(:last-child) { padding-bottom: 22px; }
-
-    .timeline-left {
-      display: flex; flex-direction: column; align-items: center;
-      flex-shrink: 0; width: 14px;
+    /* HEC */
+    .hec-banner {
+      background: var(--dark);
+      border-radius: var(--radius);
+      padding: 36px 40px;
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 28px;
+      align-items: center;
     }
-
-    .tl-dot {
-      width: 10px; height: 10px; border-radius: 50%;
-      background: var(--gold); flex-shrink: 0; margin-top: 5px;
+    .hec-label {
+      font-size: 0.76rem; letter-spacing: 0.5px; text-transform: uppercase;
+      color: #9a978d; margin-bottom: 10px; font-weight: 600;
     }
-
-    .tl-line {
-      flex: 1; width: 1px; background: var(--border); margin-top: 5px;
-    }
-
-    .tl-content { flex: 1; }
-
-    .tl-date {
-      font-size: 0.68rem; font-weight: 500; letter-spacing: 1px;
-      text-transform: uppercase; color: var(--gold); margin-bottom: 3px;
-    }
-
-    .tl-title {
-      font-size: 0.9rem; font-weight: 500;
-      color: var(--dark); margin-bottom: 3px;
-    }
-
-    .tl-sub {
-      font-size: 0.78rem; color: var(--muted);
-      font-weight: 300; line-height: 1.55;
-    }
-
-    /* HEC CARD */
-    .hec-card {
-      background: var(--dark); border-radius: 16px;
-      padding: 26px 28px; position: relative; overflow: hidden;
-    }
-
-    .hec-card::before {
-      content: ''; position: absolute;
-      top: 0; left: 0; right: 0; height: 3px;
-      background: linear-gradient(90deg, var(--gold), #e8c97a);
-    }
-
-    .hec-eyebrow {
-      font-size: 0.67rem; letter-spacing: 2px; text-transform: uppercase;
-      color: var(--gold); margin-bottom: 10px; font-weight: 500;
-    }
-
     .hec-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.15rem; color: #fff; margin-bottom: 8px;
+      font-family: 'Source Serif 4', serif;
+      font-size: 1.5rem; color: #f5f4f1; margin-bottom: 10px; font-weight: 700;
     }
+    .hec-sub { font-size: 0.88rem; color: #a3a099; font-weight: 300; line-height: 1.65; max-width: 44ch; }
 
-    .hec-sub {
-      font-size: 0.8rem; color: #888;
-      font-weight: 300; line-height: 1.65;
-    }
+    .hec-facts { display: flex; flex-direction: column; gap: 12px; }
+    .hec-fact-row { display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 10px; }
+    .hec-fact-row:last-child { border-bottom: none; padding-bottom: 0; }
+    .hec-fact-label { font-size: 0.78rem; color: #8c8980; }
+    .hec-fact-value { font-size: 0.86rem; color: #f5f4f1; font-weight: 600; }
 
-    .hec-tag {
-      display: inline-block; margin-top: 14px;
-      background: rgba(201,168,76,0.15);
-      border: 1px solid rgba(201,168,76,0.3);
-      color: var(--gold); font-size: 0.7rem; letter-spacing: 1px;
-      text-transform: uppercase; padding: 4px 12px;
-      border-radius: 100px; font-weight: 500;
+    @media (max-width: 680px) {
+      .hec-banner { grid-template-columns: 1fr; padding: 28px 24px; }
     }
 
     /* SKILLS */
-    .skills-card {
-      background: var(--white); border: 1px solid var(--border);
-      border-radius: 16px; padding: 22px 24px;
-      display: flex; flex-wrap: wrap; gap: 8px;
+    .skills-groups {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px 32px;
+    }
+    .skill-group-label {
+      font-size: 0.78rem; font-weight: 700; color: var(--ink); margin-bottom: 12px;
+    }
+    .skill-list { display: flex; flex-direction: column; gap: 6px; }
+    .skill-list li { font-size: 0.87rem; color: var(--mid); list-style: none; padding-left: 14px; position: relative; }
+    .skill-list li::before {
+      content: ''; position: absolute; left: 0; top: 0.55em;
+      width: 5px; height: 5px; border-radius: 1px; background: var(--accent);
     }
 
-    .skill-pill {
-      background: var(--bg); border: 1px solid var(--border);
-      color: var(--mid); font-size: 0.78rem;
-      font-weight: 400; padding: 6px 14px; border-radius: 100px;
-      transition: transform 0.15s ease, background 0.15s ease, border-color 0.15s ease;
-      cursor: default;
+    @media (max-width: 680px) {
+      .skills-groups { grid-template-columns: 1fr; gap: 24px; }
     }
 
-    .skill-pill:hover {
-      transform: translateY(-2px);
-      background: #eceae3;
-      border-color: #c9c7be;
+    /* LINKS */
+    .links-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
     }
 
-    .skill-pill.featured {
-      background: #fdf7eb; border-color: #e8c97a;
-      color: #9a6f1a; font-weight: 500;
-    }
-
-    .skill-pill.featured:hover {
-      background: #faefd6;
-      border-color: var(--gold);
-    }
-
-    /* LINK CARD */
     .link-card {
-      background: var(--white); border: 1px solid var(--border);
-      border-radius: 14px; display: flex; align-items: center;
-      gap: 14px; padding: 15px 20px;
-      text-decoration: none; color: var(--dark);
-      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+      background: var(--white);
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 12px; padding: 18px 20px;
+      text-decoration: none; color: var(--ink);
+      transition: background 0.15s;
     }
+    .link-card:hover { background: var(--bg); }
+    .link-card-wide { grid-column: 1 / -1; }
 
-    .link-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(0,0,0,0.07);
-      border-color: #c9c7be;
+    .link-text { min-width: 0; }
+    .link-title { font-size: 0.88rem; font-weight: 700; color: var(--ink); margin-bottom: 2px; }
+    .link-sub { font-size: 0.76rem; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .link-arrow { color: var(--muted); flex-shrink: 0; }
+    .link-card:hover .link-arrow { color: var(--accent); }
+
+    @media (max-width: 620px) {
+      .links-grid { grid-template-columns: 1fr; }
     }
-
-    .link-icon {
-      width: 40px; height: 40px; border-radius: 10px;
-      background: var(--bg); border: 1px solid var(--border);
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0; font-size: 1.1rem;
-    }
-
-    .link-text { flex: 1; }
-    .link-title { font-size: 0.88rem; font-weight: 500; color: var(--dark); margin-bottom: 2px; }
-    .link-sub { font-size: 0.73rem; color: var(--muted); font-weight: 300; }
-    .link-arrow { color: var(--muted); font-size: 0.85rem; transition: transform 0.18s; }
-    .link-card:hover .link-arrow { transform: translateX(3px); }
-
-    /* CV download feedback */
-    .link-card.cv-card .link-arrow { transition: transform 0.18s, opacity 0.18s; }
-    .link-card.cv-card.downloading .link-icon { animation: pulse 0.4s ease; }
-    .link-card.cv-card.downloading .link-arrow { opacity: 0; }
-
-    @keyframes pulse {
-      0%   { transform: scale(1); }
-      50%  { transform: scale(1.2); }
-      100% { transform: scale(1); }
-    }
-
-    /* CONTACT */
-    .contact-card {
-      background: var(--dark); border-radius: 16px;
-      padding: 24px 28px; display: flex; flex-direction: column; gap: 14px;
-    }
-
-    .contact-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 1rem; color: var(--white);
-    }
-
-    .contact-item {
-      display: flex; align-items: center; gap: 12px; text-decoration: none;
-    }
-
-    .contact-dot {
-      width: 6px; height: 6px; border-radius: 50%;
-      background: var(--gold); flex-shrink: 0;
-    }
-
-    .contact-value {
-      font-size: 0.83rem; color: #aaa;
-      font-weight: 300; transition: color 0.15s;
-    }
-
-    .contact-item:hover .contact-value { color: var(--white); }
 
     /* FOOTER */
     .footer {
-      text-align: center; font-size: 0.69rem;
-      color: var(--muted); letter-spacing: 0.5px; padding-top: 4px;
+      padding: 32px 0 56px;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 14px;
     }
+    .footer-name { font-size: 0.86rem; color: var(--ink); font-weight: 600; }
+    .footer-meta { font-size: 0.8rem; color: var(--muted); }
+    .footer-meta a { color: var(--muted); text-decoration: underline; text-underline-offset: 2px; }
+    .footer-meta a:hover { color: var(--ink); }
 
-    .footer a {
-      color: var(--gold); text-decoration: none;
-      transition: opacity 0.15s;
+    @media (max-width: 620px) {
+      .footer { flex-direction: column; text-align: center; }
     }
-
-    .footer a:hover { opacity: 0.75; }
   </style>
 </head>
 <body>
 
-<!-- STICKY NAV -->
-<nav class="sticky-nav" id="stickyNav">
-  <a href="#parcours">Parcours</a>
-  <a href="#competences">Compétences</a>
-  <a href="#contact">Contact</a>
+<nav class="top-nav">
+  <div class="wrap">
+    <a class="nav-name" href="#top">Victor Loiseau</a>
+    <div class="nav-links">
+      <a href="#parcours">Parcours</a>
+      <a href="#competences">Competences</a>
+      <a href="#cv" class="nav-cv">CV</a>
+    </div>
+  </div>
 </nav>
 
-<div class="container">
+<div class="wrap">
 
-  <!-- PROFIL -->
-  <div class="profile-card" id="profil">
-    <div class="top-bar"></div>
-    <div class="avatar"></div>
-    <div class="name">Victor Loiseau</div>
-    <div class="badges">
-      <span class="badge">18 ans</span>
-      <span class="badge">Lycée Marcelin Berthelot</span>
-      <span class="badge gold">✦ HEC Montréal · BBA 2026</span>
+  <!-- HERO -->
+  <div class="hero" id="top">
+    <div class="reveal">
+      <div class="hero-role">Bachelier, futur etudiant BBA a HEC Montreal</div>
+      <h1>Victor Loiseau</h1>
+      <p class="hero-bio">Specialites Mathematiques et Sciences Economiques et Sociales, mention Bien. Curieux et rigoureux, avec un interet de long terme pour la logistique et le supply chain.</p>
+      <div class="hero-facts">
+        <span class="hero-fact"><strong>18 ans</strong> &middot; Saint-Maur-des-Fosses</span>
+        <span class="hero-fact"><strong>Depart Montreal</strong> &middot; 16 aout 2026</span>
+        <span class="hero-fact"><strong>Anglais</strong> &middot; TOEFL 90, C1</span>
+      </div>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#cv">Telecharger mon CV</a>
+        <a class="btn btn-outline" href="https://www.linkedin.com/in/victor-loiseau-619b1021b" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
     </div>
-    <p class="bio">
-      Lycéen en Terminale — spécialité SES &amp; Mathématiques. Admis au BBA d'HEC Montréal pour septembre 2026. Curieux, rigoureux et ouvert sur le monde, avec une première expérience en entreprise et un séjour international.
-    </p>
   </div>
+
+  <!-- A PROPOS -->
+  <section id="apropos">
+    <p class="about-text reveal">
+      Apres un baccalaureat obtenu avec la <strong>mention Bien</strong> (15,45/20 de moyenne, specialites Mathematiques et SES), je rejoins l'annee preparatoire du <strong>BBA d'HEC Montreal</strong> en aout 2026. J'ai grandi a Saint-Maur-des-Fosses, passe deux semaines en immersion totale en anglais a Brighton, et observe le fonctionnement de deux entreprises tres differentes, un grand groupe agroalimentaire et une PME familiale. Ce qui m'attire depuis longtemps, c'est la logistique et le supply chain, la mecanique qui fait tourner les entreprises a l'echelle internationale.
+    </p>
+  </section>
 
   <!-- PARCOURS -->
-  <div class="section-label" id="parcours">Parcours &amp; expériences</div>
+  <section id="parcours">
+    <div class="section-head reveal"><h2>Parcours</h2></div>
+    <div class="reveal">
 
-  <div class="timeline-card">
-
-    <div class="timeline-item">
-      <div class="timeline-left">
-        <div class="tl-dot"></div>
-        <div class="tl-line"></div>
+      <div class="timeline-item">
+        <div class="tl-date">Juin 2026</div>
+        <div>
+          <div class="tl-title">Baccalaureat general, mention Bien</div>
+          <div class="tl-sub">Specialites Mathematiques (15/20) et Sciences Economiques et Sociales (16/20). Moyenne generale 15,45/20.</div>
+        </div>
       </div>
-      <div class="tl-content">
-        <div class="tl-date">Sept. 2026</div>
-        <div class="tl-title">BBA — HEC Montréal</div>
-        <div class="tl-sub">Bachelor of Business Administration avec année préparatoire · Montréal, Canada. Spécialisation en gestion, finance et entrepreneuriat dans l'une des meilleures écoles francophones au monde.</div>
+
+      <div class="timeline-item">
+        <div class="tl-date">Ete 2025</div>
+        <div>
+          <div class="tl-title">Sejour linguistique, Brighton (Royaume-Uni)</div>
+          <div class="tl-sub">Deux semaines d'immersion en anglais. Cours intensifs et perfectionnement oral, niveau C1 atteint (TOEFL iBT 90).</div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="tl-date">Seconde, 2023-2024</div>
+        <div>
+          <div class="tl-title">Stage d'observation, FDG Group</div>
+          <div class="tl-sub">Deux semaines. Suivi des equipes commerciales, participation aux reunions internes, decouverte des processus operationnels.</div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="tl-date">3eme, 2022-2023</div>
+        <div>
+          <div class="tl-title">Stage d'observation, Nestle France</div>
+          <div class="tl-sub">Une semaine. Decouverte d'un grand groupe agroalimentaire, chaine logistique, marketing produit, organisation d'une multinationale.</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- HEC -->
+  <section id="hec">
+    <div class="hec-banner reveal">
+      <div>
+        <div class="hec-label">Prochaine etape</div>
+        <div class="hec-title">HEC Montreal, BBA</div>
+        <div class="hec-sub">Depart pour Montreal le 16 aout 2026, rentree en annee preparatoire le 24 aout. HEC Montreal est l'une des meilleures ecoles de gestion francophones au monde.</div>
+      </div>
+      <div class="hec-facts">
+        <div class="hec-fact-row"><span class="hec-fact-label">Statut</span><span class="hec-fact-value">Admis</span></div>
+        <div class="hec-fact-row"><span class="hec-fact-label">Programme</span><span class="hec-fact-value">BBA</span></div>
+        <div class="hec-fact-row"><span class="hec-fact-label">Rentree</span><span class="hec-fact-value">Aout 2026</span></div>
       </div>
     </div>
+  </section>
 
-    <div class="timeline-item">
-      <div class="timeline-left">
-        <div class="tl-dot"></div>
-        <div class="tl-line"></div>
+  <!-- COMPETENCES -->
+  <section id="competences">
+    <div class="section-head reveal"><h2>Competences</h2></div>
+    <div class="skills-groups reveal">
+      <div>
+        <div class="skill-group-label">Academique</div>
+        <ul class="skill-list">
+          <li>SES, 16/20 au Bac</li>
+          <li>Mathematiques, 15/20</li>
+          <li>Analyse economique</li>
+          <li>Gestion &amp; Business</li>
+        </ul>
       </div>
-      <div class="tl-content">
-        <div class="tl-date">Été 2025</div>
-        <div class="tl-title">Séjour linguistique — Brighton, Royaume-Uni</div>
-        <div class="tl-sub">2 semaines d'immersion totale en anglais · Cours intensifs, découverte de la culture britannique et perfectionnement oral.</div>
+      <div>
+        <div class="skill-group-label">Langues</div>
+        <ul class="skill-list">
+          <li>Francais, langue maternelle</li>
+          <li>Anglais, TOEFL 90 (C1)</li>
+        </ul>
       </div>
-    </div>
-
-    <div class="timeline-item">
-      <div class="timeline-left">
-        <div class="tl-dot"></div>
-        <div class="tl-line"></div>
-      </div>
-      <div class="tl-content">
-        <div class="tl-date">Seconde · 2023–2024</div>
-        <div class="tl-title">Stage d'observation — FDG Group</div>
-        <div class="tl-sub">2 semaines · Immersion dans les métiers du groupe : suivi des équipes commerciales, participation aux réunions internes, découverte des processus opérationnels.</div>
-      </div>
-    </div>
-
-    <div class="timeline-item">
-      <div class="timeline-left">
-        <div class="tl-dot"></div>
-      </div>
-      <div class="tl-content">
-        <div class="tl-date">3ème · 2022–2023</div>
-        <div class="tl-title">Stage d'observation — Nestlé</div>
-        <div class="tl-sub">1 semaine · Découverte d'un grand groupe international de l'agroalimentaire : chaîne logistique, marketing produit et organisation d'une multinationale.</div>
+      <div>
+        <div class="skill-group-label">Atouts</div>
+        <ul class="skill-list">
+          <li>Permis B</li>
+          <li>Esprit d'initiative</li>
+          <li>Ouverture internationale</li>
+        </ul>
       </div>
     </div>
+  </section>
 
-  </div>
+  <!-- CV & LIENS -->
+  <section id="cv">
+    <div class="section-head reveal"><h2>CV &amp; liens</h2></div>
+    <div class="links-grid reveal">
 
-  <!-- HEC HIGHLIGHT -->
-  <div class="hec-card">
-    <div class="hec-eyebrow">Prochaine étape</div>
-    <div class="hec-title">HEC Montréal — BBA</div>
-    <div class="hec-sub">
-      Intégration en septembre 2026 avec année préparatoire. HEC Montréal est l'une des meilleures écoles de gestion francophones au monde, reconnue internationalement pour l'excellence de ses programmes en commerce et management.
+      <a class="link-card" href="CV_Victor_Loiseau.pdf" download="CV_Victor_Loiseau.pdf">
+        <div class="link-text">
+          <div class="link-title">CV, version France</div>
+          <div class="link-sub">PDF</div>
+        </div>
+        <svg class="link-arrow" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+      </a>
+
+      <a class="link-card" href="CV_Victor_Loiseau_Quebec.pdf" download="CV_Victor_Loiseau_Quebec.pdf">
+        <div class="link-text">
+          <div class="link-title">CV, version Quebec</div>
+          <div class="link-sub">PDF, adapte au marche quebecois</div>
+        </div>
+        <svg class="link-arrow" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+      </a>
+
+      <a class="link-card" href="https://www.linkedin.com/in/victor-loiseau-619b1021b" target="_blank" rel="noopener">
+        <div class="link-text">
+          <div class="link-title">LinkedIn</div>
+          <div class="link-sub">Victor Loiseau</div>
+        </div>
+        <svg class="link-arrow" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M7 7h10v10"/></svg>
+      </a>
+
+      <a class="link-card" href="https://github.com/victorloiseau" target="_blank" rel="noopener">
+        <div class="link-text">
+          <div class="link-title">GitHub</div>
+          <div class="link-sub">victorloiseau</div>
+        </div>
+        <svg class="link-arrow" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M7 7h10v10"/></svg>
+      </a>
+
+      <a class="link-card link-card-wide" href="mailto:victor.loiseau2405@gmail.com">
+        <div class="link-text">
+          <div class="link-title">Email</div>
+          <div class="link-sub">victor.loiseau2405@gmail.com</div>
+        </div>
+        <svg class="link-arrow" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M7 7h10v10"/></svg>
+      </a>
+
     </div>
-    <div class="hec-tag">🎓 Admis · Rentrée Sept. 2026</div>
-  </div>
+  </section>
 
-  <!-- COMPÉTENCES -->
-  <div class="section-label" id="competences">Compétences &amp; atouts</div>
-
-  <div class="skills-card">
-    <span class="skill-pill featured">Sciences Éco. &amp; Sociales</span>
-    <span class="skill-pill featured">Mathématiques</span>
-    <span class="skill-pill">Français — Langue maternelle</span>
-    <span class="skill-pill">Anglais — B2/C1</span>
-    <span class="skill-pill">Permis B</span>
-    <span class="skill-pill">Analyse économique</span>
-    <span class="skill-pill">Gestion &amp; Business</span>
-    <span class="skill-pill">Esprit d'initiative</span>
-    <span class="skill-pill">International</span>
-    <span class="skill-pill">Curiosité</span>
-  </div>
-
-  <!-- LIENS & CONTACT -->
-  <div class="section-label" id="contact">Liens &amp; Contact</div>
-
-  <a class="link-card cv-card" href="CV_Victor_Loiseau_3.pdf" download="CV_Victor_Loiseau.pdf" id="cvBtn">
-    <div class="link-icon">📄</div>
-    <div class="link-text">
-      <div class="link-title">Mon CV</div>
-      <div class="link-sub">Télécharger en PDF</div>
-    </div>
-    <div class="link-arrow">↓</div>
-  </a>
-
-  <a class="link-card" href="https://www.linkedin.com/in/victor-loiseau-619b1021b" target="_blank" rel="noopener">
-    <div class="link-icon">💼</div>
-    <div class="link-text">
-      <div class="link-title">LinkedIn</div>
-      <div class="link-sub">Victor Loiseau</div>
-    </div>
-    <div class="link-arrow">→</div>
-  </a>
-
-  <a class="link-card" href="https://github.com/victorloiseau" target="_blank" rel="noopener">
-    <div class="link-icon">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.342-3.369-1.342-.454-1.155-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0 1 12 6.836a9.59 9.59 0 0 1 2.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.579.688.481C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z" fill="#444442"/>
-      </svg>
-    </div>
-    <div class="link-text">
-      <div class="link-title">GitHub</div>
-      <div class="link-sub">victorloiseau</div>
-    </div>
-    <div class="link-arrow">→</div>
-  </a>
-
-  <a class="link-card" href="mailto:victor.loiseau2405@gmail.com">
-    <div class="link-icon">✉️</div>
-    <div class="link-text">
-      <div class="link-title">Email</div>
-      <div class="link-sub">victor.loiseau2405@gmail.com</div>
-    </div>
-    <div class="link-arrow">→</div>
-  </a>
-
-  <div class="contact-card">
-    <div class="contact-title">Me contacter</div>
-    <a class="contact-item" href="mailto:victor.loiseau2405@gmail.com">
-      <div class="contact-dot"></div>
-      <span class="contact-value">victor.loiseau2405@gmail.com</span>
-    </a>
-    <a class="contact-item" href="#">
-      <div class="contact-dot"></div>
-      <span class="contact-value">France · Montréal dès sept. 2026</span>
-    </a>
-  </div>
-
-  <div class="footer">
-    © 2026 · Victor Loiseau ·
-    <a href="https://www.linkedin.com/in/victor-loiseau-619b1021b" target="_blank" rel="noopener">LinkedIn</a>
+  <div class="footer reveal">
+    <div class="footer-name">Victor Loiseau</div>
+    <div class="footer-meta">France jusqu'au 16 aout 2026, puis Montreal &middot; <a href="mailto:victor.loiseau2405@gmail.com">victor.loiseau2405@gmail.com</a></div>
   </div>
 
 </div>
 
 <script>
-  // Sticky nav
-  const nav = document.getElementById('stickyNav');
-  const profile = document.getElementById('profil');
-  const observer = new IntersectionObserver(
-    ([entry]) => nav.classList.toggle('visible', !entry.isIntersecting),
-    { threshold: 0.1 }
-  );
-  observer.observe(profile);
-
-  // CV download feedback
-  document.getElementById('cvBtn').addEventListener('click', function () {
-    this.classList.add('downloading');
-    const sub = this.querySelector('.link-sub');
-    const orig = sub.textContent;
-    sub.textContent = 'Téléchargement…';
-    setTimeout(() => {
-      this.classList.remove('downloading');
-      sub.textContent = orig;
-    }, 1800);
-  });
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const revealEls = document.querySelectorAll('.reveal');
+  if (reduceMotion) {
+    revealEls.forEach(el => el.classList.add('in'));
+  } else {
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+    revealEls.forEach(el => revealObserver.observe(el));
+  }
 </script>
 </body>
 </html>
