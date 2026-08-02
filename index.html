@@ -3,16 +3,46 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="description" content="Victor Loiseau, bachelier mention Bien, admis au BBA d'HEC Montreal. Depart pour Montreal en aout 2026."/>
+  <meta name="description" content="Victor Loiseau, bachelier mention Bien, admis au BBA d'HEC Montréal. Départ pour Montréal en août 2026."/>
   <meta property="og:title" content="Victor Loiseau"/>
-  <meta property="og:description" content="Bachelier mention Bien, admis au BBA d'HEC Montreal. Depart pour Montreal en aout 2026."/>
+  <meta property="og:description" content="Bachelier mention Bien, admis au BBA d'HEC Montréal. Départ pour Montréal en août 2026."/>
   <meta property="og:type" content="website"/>
   <meta property="og:url" content="https://victorloiseau.github.io"/>
+  <meta property="og:image" content="https://victorloiseau.github.io/og-image.png"/>
+  <meta property="og:image:width" content="1200"/>
+  <meta property="og:image:height" content="630"/>
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:title" content="Victor Loiseau"/>
+  <meta name="twitter:description" content="Bachelier mention Bien, admis au BBA d'HEC Montréal. Départ pour Montréal en août 2026."/>
+  <meta name="twitter:image" content="https://victorloiseau.github.io/og-image.png"/>
+  <meta name="theme-color" content="#fbfbfa"/>
+  <meta name="theme-color" content="#0c0d10" media="(prefers-color-scheme: dark)"/>
   <title>Victor Loiseau</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='14' fill='%23111318'/><text x='50' y='66' text-anchor='middle' font-family='Georgia,serif' font-size='38' fill='%23ffffff' font-weight='bold'>VL</text></svg>"/>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@600;700&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Victor Loiseau",
+    "url": "https://victorloiseau.github.io",
+    "image": "https://victorloiseau.github.io/og-image.png",
+    "email": "mailto:victor.loiseau2405@gmail.com",
+    "description": "Bachelier mention Bien, admis au BBA d'HEC Montréal. Depart pour Montreal en aout 2026.",
+    "knowsLanguage": ["fr", "en"],
+    "affiliation": {
+      "@type": "CollegeOrUniversity",
+      "name": "HEC Montréal",
+      "url": "https://www.hec.ca"
+    },
+    "sameAs": [
+      "https://www.linkedin.com/in/victor-loiseau-619b1021b",
+      "https://github.com/victorloiseau"
+    ]
+  }
+  </script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -23,11 +53,18 @@
       --mid: #45464c;
       --muted: #6c6d72;
       --border: #e4e3df;
-      --accent: #9a6a2f;
+      --accent: #8a5c26;
       --accent-strong: #14151a;
       --dark: #111318;
       --radius: 8px;
       --container: 980px;
+      --bg-glow: rgba(138,92,38,0.10);
+      /* bandeau HEC toujours sombre, meme en light mode: tokens fixes plutot que hex en dur */
+      --hec-fg: #f5f4f1;
+      --hec-fg-dim: #a3a099;
+      --hec-label: #9a978d;
+      --hec-fact-label: #8c8980;
+      --hec-row-border: rgba(255,255,255,0.08);
     }
 
     @media (prefers-color-scheme: dark) {
@@ -41,13 +78,25 @@
         --accent: #c99a5b;
         --accent-strong: #eeeeec;
         --dark: #050506;
+        --bg-glow: rgba(201,154,91,0.07);
       }
     }
 
     html { color-scheme: light dark; }
 
+    .skip-link {
+      position: absolute; left: 16px; top: -60px;
+      background: var(--accent-strong); color: var(--white);
+      padding: 10px 18px; border-radius: var(--radius);
+      font-size: 0.86rem; font-weight: 600; text-decoration: none;
+      z-index: 200; transition: top 0.15s;
+    }
+    .skip-link:focus { top: 12px; }
+
     body {
-      background: var(--bg);
+      background-color: var(--bg);
+      background-image: radial-gradient(ellipse 900px 500px at 15% 0px, var(--bg-glow), transparent 60%);
+      background-repeat: no-repeat;
       color: var(--ink);
       font-family: 'Manrope', sans-serif;
       -webkit-font-smoothing: antialiased;
@@ -61,6 +110,20 @@
       transition: opacity 0.5s ease, transform 0.5s ease;
     }
     .reveal.in { opacity: 1; transform: translateY(0); }
+
+    /* cascade discrete plutot qu'un fade uniforme partout: chaque item d'une liste entre avec un leger decalage */
+    .timeline-item.reveal:nth-child(2) { transition-delay: 70ms; }
+    .timeline-item.reveal:nth-child(3) { transition-delay: 140ms; }
+    .timeline-item.reveal:nth-child(4) { transition-delay: 210ms; }
+
+    .skills-groups > .reveal:nth-child(2) { transition-delay: 90ms; }
+    .skills-groups > .reveal:nth-child(3) { transition-delay: 180ms; }
+
+    .link-card.reveal:nth-child(2) { transition-delay: 60ms; }
+    .link-card.reveal:nth-child(3) { transition-delay: 120ms; }
+    .link-card.reveal:nth-child(4) { transition-delay: 180ms; }
+    .link-card.reveal:nth-child(5) { transition-delay: 240ms; }
+    .link-card.reveal:nth-child(6) { transition-delay: 300ms; }
 
     @media (prefers-reduced-motion: reduce) {
       .reveal { opacity: 1; transform: none; transition: none; }
@@ -84,12 +147,38 @@
     .nav-links a:hover { color: var(--ink); }
     .nav-links .nav-cv {
       color: var(--white); background: var(--accent-strong);
-      padding: 8px 16px; border-radius: var(--radius);
+      padding: 12px 18px; border-radius: var(--radius);
+      display: inline-flex; align-items: center; min-height: 44px;
     }
     .nav-links .nav-cv:hover { opacity: 0.85; color: var(--white); }
 
+    .nav-toggle {
+      display: none;
+      width: 44px; height: 44px;
+      align-items: center; justify-content: center;
+      background: transparent; border: 1px solid var(--border); border-radius: var(--radius);
+      color: var(--ink); cursor: pointer;
+    }
+    .nav-toggle:hover { border-color: var(--mid); }
+
+    .nav-menu { display: none; }
+
     @media (max-width: 620px) {
       .nav-links a:not(.nav-cv) { display: none; }
+      .nav-toggle { display: inline-flex; }
+
+      .nav-menu {
+        border-top: 1px solid var(--border);
+        background: var(--bg);
+      }
+      .nav-menu.open { display: flex; flex-direction: column; }
+      .nav-menu a {
+        padding: 14px 24px; font-size: 0.9rem; font-weight: 500;
+        color: var(--mid); text-decoration: none;
+        border-bottom: 1px solid var(--border);
+      }
+      .nav-menu a:last-child { border-bottom: none; }
+      .nav-menu a:hover { color: var(--ink); }
     }
 
     /* HERO */
@@ -187,7 +276,10 @@
 
     /* HEC */
     .hec-banner {
-      background: var(--dark);
+      background:
+        linear-gradient(rgba(8,7,5,0.76), rgba(8,7,5,0.76)),
+        url('hec-photo.jpg') center 40% / cover no-repeat,
+        var(--dark);
       border-radius: var(--radius);
       padding: 36px 40px;
       display: grid;
@@ -197,19 +289,19 @@
     }
     .hec-label {
       font-size: 0.76rem; letter-spacing: 0.5px; text-transform: uppercase;
-      color: #9a978d; margin-bottom: 10px; font-weight: 600;
+      color: var(--hec-label); margin-bottom: 10px; font-weight: 600;
     }
     .hec-title {
       font-family: 'Source Serif 4', serif;
-      font-size: 1.5rem; color: #f5f4f1; margin-bottom: 10px; font-weight: 700;
+      font-size: 1.5rem; color: var(--hec-fg); margin-bottom: 10px; font-weight: 700;
     }
-    .hec-sub { font-size: 0.88rem; color: #a3a099; font-weight: 300; line-height: 1.65; max-width: 44ch; }
+    .hec-sub { font-size: 0.88rem; color: var(--hec-fg-dim); font-weight: 300; line-height: 1.65; max-width: 44ch; }
 
     .hec-facts { display: flex; flex-direction: column; gap: 12px; }
-    .hec-fact-row { display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 10px; }
+    .hec-fact-row { display: flex; justify-content: space-between; border-bottom: 1px solid var(--hec-row-border); padding-bottom: 10px; }
     .hec-fact-row:last-child { border-bottom: none; padding-bottom: 0; }
-    .hec-fact-label { font-size: 0.78rem; color: #8c8980; }
-    .hec-fact-value { font-size: 0.86rem; color: #f5f4f1; font-weight: 600; }
+    .hec-fact-label { font-size: 0.78rem; color: var(--hec-fact-label); }
+    .hec-fact-value { font-size: 0.86rem; color: var(--hec-fg); font-weight: 600; }
 
     @media (max-width: 680px) {
       .hec-banner { grid-template-columns: 1fr; padding: 28px 24px; }
@@ -284,32 +376,41 @@
 </head>
 <body>
 
+<a class="skip-link" href="#top">Aller au contenu</a>
+
 <nav class="top-nav">
   <div class="wrap">
     <a class="nav-name" href="#top">Victor Loiseau</a>
     <div class="nav-links">
       <a href="#parcours">Parcours</a>
-      <a href="#competences">Competences</a>
+      <a href="#competences">Compétences</a>
       <a href="#cv" class="nav-cv">CV</a>
     </div>
+    <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navMenu" aria-label="Ouvrir le menu">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+  </div>
+  <div class="nav-menu" id="navMenu">
+    <a href="#parcours">Parcours</a>
+    <a href="#competences">Competences</a>
   </div>
 </nav>
 
 <div class="wrap">
 
   <!-- HERO -->
-  <div class="hero" id="top">
+  <div class="hero" id="top" tabindex="-1">
     <div class="reveal">
-      <div class="hero-role">Bachelier, futur etudiant BBA a HEC Montreal</div>
+      <div class="hero-role">Bachelier, futur étudiant BBA à HEC Montréal</div>
       <h1>Victor Loiseau</h1>
-      <p class="hero-bio">Specialites Mathematiques et Sciences Economiques et Sociales, mention Bien. Curieux et rigoureux, avec un interet de long terme pour la logistique et le supply chain.</p>
+      <p class="hero-bio">Spécialités Mathématiques et Sciences Économiques et Sociales, mention Bien. Curieux et rigoureux, avec un intérêt de long terme pour la logistique et le supply chain.</p>
       <div class="hero-facts">
-        <span class="hero-fact"><strong>18 ans</strong> &middot; Saint-Maur-des-Fosses</span>
-        <span class="hero-fact"><strong>Depart Montreal</strong> &middot; 16 aout 2026</span>
+        <span class="hero-fact"><strong>18 ans</strong> &middot; Saint-Maur-des-Fossés</span>
+        <span class="hero-fact"><strong>Départ Montréal</strong> &middot; 16 août 2026</span>
         <span class="hero-fact"><strong>Anglais</strong> &middot; TOEFL 90, C1</span>
       </div>
       <div class="hero-actions">
-        <a class="btn btn-primary" href="#cv">Telecharger mon CV</a>
+        <a class="btn btn-primary" href="#cv">Télécharger mon CV</a>
         <a class="btn btn-outline" href="https://www.linkedin.com/in/victor-loiseau-619b1021b" target="_blank" rel="noopener">LinkedIn</a>
       </div>
     </div>
@@ -317,45 +418,46 @@
 
   <!-- A PROPOS -->
   <section id="apropos">
+    <div class="section-head reveal"><h2>À propos</h2></div>
     <p class="about-text reveal">
-      Apres un baccalaureat obtenu avec la <strong>mention Bien</strong> (15,45/20 de moyenne, specialites Mathematiques et SES), je rejoins l'annee preparatoire du <strong>BBA d'HEC Montreal</strong> en aout 2026. J'ai grandi a Saint-Maur-des-Fosses, passe deux semaines en immersion totale en anglais a Brighton, et observe le fonctionnement de deux entreprises tres differentes, un grand groupe agroalimentaire et une PME familiale. Ce qui m'attire depuis longtemps, c'est la logistique et le supply chain, la mecanique qui fait tourner les entreprises a l'echelle internationale.
+      Après un baccalauréat obtenu avec la mention Bien (15,45/20 de moyenne, spécialités Mathématiques et SES), je rejoins l'année préparatoire du <strong>BBA d'HEC Montréal</strong> en août 2026. J'ai grandi à Saint-Maur-des-Fossés, passé deux semaines en immersion totale en anglais à Brighton, et observé le fonctionnement de deux entreprises très différentes, un grand groupe agroalimentaire et une PME. Je m'intéresse à la logistique et au supply chain, la mécanique qui fait tourner les entreprises à l'échelle internationale.
     </p>
   </section>
 
   <!-- PARCOURS -->
   <section id="parcours">
     <div class="section-head reveal"><h2>Parcours</h2></div>
-    <div class="reveal">
+    <div>
 
-      <div class="timeline-item">
+      <div class="timeline-item reveal">
         <div class="tl-date">Juin 2026</div>
         <div>
-          <div class="tl-title">Baccalaureat general, mention Bien</div>
-          <div class="tl-sub">Specialites Mathematiques (15/20) et Sciences Economiques et Sociales (16/20). Moyenne generale 15,45/20.</div>
+          <div class="tl-title">Baccalauréat général, mention Bien</div>
+          <div class="tl-sub">Spécialités Mathématiques (15/20) et Sciences Économiques et Sociales (16/20). Moyenne générale 15,45/20.</div>
         </div>
       </div>
 
-      <div class="timeline-item">
-        <div class="tl-date">Ete 2025</div>
+      <div class="timeline-item reveal">
+        <div class="tl-date">Été 2025</div>
         <div>
-          <div class="tl-title">Sejour linguistique, Brighton (Royaume-Uni)</div>
+          <div class="tl-title">Séjour linguistique, Brighton (Royaume-Uni)</div>
           <div class="tl-sub">Deux semaines d'immersion en anglais. Cours intensifs et perfectionnement oral, niveau C1 atteint (TOEFL iBT 90).</div>
         </div>
       </div>
 
-      <div class="timeline-item">
+      <div class="timeline-item reveal">
         <div class="tl-date">Seconde, 2023-2024</div>
         <div>
           <div class="tl-title">Stage d'observation, FDG Group</div>
-          <div class="tl-sub">Deux semaines. Suivi des equipes commerciales, participation aux reunions internes, decouverte des processus operationnels.</div>
+          <div class="tl-sub">Deux semaines. Suivi des équipes commerciales, participation aux réunions internes, découverte des processus opérationnels.</div>
         </div>
       </div>
 
-      <div class="timeline-item">
-        <div class="tl-date">3eme, 2022-2023</div>
+      <div class="timeline-item reveal">
+        <div class="tl-date">3ème, 2022-2023</div>
         <div>
-          <div class="tl-title">Stage d'observation, Nestle France</div>
-          <div class="tl-sub">Une semaine. Decouverte d'un grand groupe agroalimentaire, chaine logistique, marketing produit, organisation d'une multinationale.</div>
+          <div class="tl-title">Stage d'observation, Nestlé France</div>
+          <div class="tl-sub">Une semaine. Découverte d'un grand groupe agroalimentaire, chaîne logistique, marketing produit, organisation d'une multinationale.</div>
         </div>
       </div>
 
@@ -366,39 +468,39 @@
   <section id="hec">
     <div class="hec-banner reveal">
       <div>
-        <div class="hec-label">Prochaine etape</div>
-        <div class="hec-title">HEC Montreal, BBA</div>
-        <div class="hec-sub">Depart pour Montreal le 16 aout 2026, rentree en annee preparatoire le 24 aout. HEC Montreal est l'une des meilleures ecoles de gestion francophones au monde.</div>
+        <div class="hec-label">Prochaine étape</div>
+        <h2 class="hec-title">HEC Montréal, BBA</h2>
+        <div class="hec-sub">Départ pour Montréal le 16 août 2026, rentrée en année préparatoire le 24 août. HEC Montréal est l'une des meilleures écoles de gestion francophones au monde.</div>
       </div>
       <div class="hec-facts">
         <div class="hec-fact-row"><span class="hec-fact-label">Statut</span><span class="hec-fact-value">Admis</span></div>
         <div class="hec-fact-row"><span class="hec-fact-label">Programme</span><span class="hec-fact-value">BBA</span></div>
-        <div class="hec-fact-row"><span class="hec-fact-label">Rentree</span><span class="hec-fact-value">Aout 2026</span></div>
+        <div class="hec-fact-row"><span class="hec-fact-label">Rentrée</span><span class="hec-fact-value">Août 2026</span></div>
       </div>
     </div>
   </section>
 
   <!-- COMPETENCES -->
   <section id="competences">
-    <div class="section-head reveal"><h2>Competences</h2></div>
-    <div class="skills-groups reveal">
-      <div>
-        <div class="skill-group-label">Academique</div>
+    <div class="section-head reveal"><h2>Compétences</h2></div>
+    <div class="skills-groups">
+      <div class="reveal">
+        <div class="skill-group-label">Académique</div>
         <ul class="skill-list">
           <li>SES, 16/20 au Bac</li>
-          <li>Mathematiques, 15/20</li>
-          <li>Analyse economique</li>
+          <li>Mathématiques, 15/20</li>
+          <li>Analyse économique</li>
           <li>Gestion &amp; Business</li>
         </ul>
       </div>
-      <div>
+      <div class="reveal">
         <div class="skill-group-label">Langues</div>
         <ul class="skill-list">
-          <li>Francais, langue maternelle</li>
+          <li>Français, langue maternelle</li>
           <li>Anglais, TOEFL 90 (C1)</li>
         </ul>
       </div>
-      <div>
+      <div class="reveal">
         <div class="skill-group-label">Atouts</div>
         <ul class="skill-list">
           <li>Permis B</li>
@@ -412,54 +514,54 @@
   <!-- CV & LIENS -->
   <section id="cv">
     <div class="section-head reveal"><h2>CV &amp; liens</h2></div>
-    <div class="links-grid reveal">
+    <div class="links-grid">
 
-      <a class="link-card" href="CV_Victor_Loiseau.pdf" download="CV_Victor_Loiseau.pdf">
+      <a class="link-card reveal" href="CV_Victor_Loiseau.pdf" download="CV_Victor_Loiseau.pdf">
         <div class="link-text">
           <div class="link-title">CV, version France</div>
           <div class="link-sub">PDF</div>
         </div>
-        <svg class="link-arrow" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+        <svg class="link-arrow" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
       </a>
 
-      <a class="link-card" href="CV_Victor_Loiseau_Quebec.pdf" download="CV_Victor_Loiseau_Quebec.pdf">
+      <a class="link-card reveal" href="CV_Victor_Loiseau_Quebec.pdf" download="CV_Victor_Loiseau_Quebec.pdf">
         <div class="link-text">
-          <div class="link-title">CV, version Quebec</div>
-          <div class="link-sub">PDF, adapte au marche quebecois</div>
+          <div class="link-title">CV, version Québec</div>
+          <div class="link-sub">PDF, adapté au marché québécois</div>
         </div>
-        <svg class="link-arrow" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+        <svg class="link-arrow" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
       </a>
 
-      <a class="link-card" href="TOEFL_Score_Victor_Loiseau.pdf" download="TOEFL_Score_Victor_Loiseau.pdf">
+      <a class="link-card reveal" href="TOEFL_Score_Victor_Loiseau.pdf" download="TOEFL_Score_Victor_Loiseau.pdf">
         <div class="link-text">
           <div class="link-title">Score TOEFL iBT</div>
           <div class="link-sub">90 / 120, niveau C1</div>
         </div>
-        <svg class="link-arrow" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+        <svg class="link-arrow" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
       </a>
 
-      <a class="link-card" href="https://www.linkedin.com/in/victor-loiseau-619b1021b" target="_blank" rel="noopener">
+      <a class="link-card reveal" href="https://www.linkedin.com/in/victor-loiseau-619b1021b" target="_blank" rel="noopener">
         <div class="link-text">
           <div class="link-title">LinkedIn</div>
           <div class="link-sub">Victor Loiseau</div>
         </div>
-        <svg class="link-arrow" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M7 7h10v10"/></svg>
+        <svg class="link-arrow" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg>
       </a>
 
-      <a class="link-card" href="https://github.com/victorloiseau" target="_blank" rel="noopener">
+      <a class="link-card reveal" href="https://github.com/victorloiseau" target="_blank" rel="noopener">
         <div class="link-text">
           <div class="link-title">GitHub</div>
           <div class="link-sub">victorloiseau</div>
         </div>
-        <svg class="link-arrow" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M7 7h10v10"/></svg>
+        <svg class="link-arrow" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg>
       </a>
 
-      <a class="link-card" href="mailto:victor.loiseau2405@gmail.com">
+      <a class="link-card reveal" href="mailto:victor.loiseau2405@gmail.com">
         <div class="link-text">
           <div class="link-title">Email</div>
           <div class="link-sub">victor.loiseau2405@gmail.com</div>
         </div>
-        <svg class="link-arrow" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M7 7h10v10"/></svg>
+        <svg class="link-arrow" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg>
       </a>
 
     </div>
@@ -467,7 +569,7 @@
 
   <div class="footer reveal">
     <div class="footer-name">Victor Loiseau</div>
-    <div class="footer-meta">France jusqu'au 16 aout 2026, puis Montreal &middot; <a href="mailto:victor.loiseau2405@gmail.com">victor.loiseau2405@gmail.com</a></div>
+    <div class="footer-meta">France jusqu'au 16 août 2026, puis Montréal &middot; <a href="mailto:victor.loiseau2405@gmail.com">victor.loiseau2405@gmail.com</a></div>
   </div>
 
 </div>
@@ -488,6 +590,19 @@
     }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
     revealEls.forEach(el => revealObserver.observe(el));
   }
+
+  const navToggle = document.getElementById('navToggle');
+  const navMenu = document.getElementById('navMenu');
+  navToggle.addEventListener('click', () => {
+    const open = navMenu.classList.toggle('open');
+    navToggle.setAttribute('aria-expanded', String(open));
+  });
+  navMenu.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      navMenu.classList.remove('open');
+      navToggle.setAttribute('aria-expanded', 'false');
+    });
+  });
 </script>
 </body>
 </html>
