@@ -573,11 +573,11 @@
       <div class="voyages-legend">
         <div>
           <div class="voyages-label"><span class="voyages-dot"></span>Deja visites</div>
-          <p class="voyages-list">France, Royaume-Uni, Espagne, Italie, Belgique, Maroc, Allemagne, Indonesie (dont Bali), La Reunion, Guadeloupe, Etats-Unis, Singapour, Afrique du Sud, Japon, Coree du Sud</p>
+          <p class="voyages-list">France, Royaume-Uni, Espagne, Italie, Belgique, Maroc, Allemagne, Indonesie, La Reunion, Guadeloupe, Etats-Unis, Singapour, Afrique du Sud, Japon, Coree du Sud</p>
         </div>
         <div>
-          <div class="voyages-label"><span class="voyages-dot voyages-dot-wishlist"></span>Envie d'y aller</div>
-          <p class="voyages-list">Canada, Chine, Nigeria, Inde, Vietnam</p>
+          <div class="voyages-label"><span class="voyages-dot voyages-dot-wishlist"></span>A visiter</div>
+          <p class="voyages-list">Canada, Chine, Nigeria, Inde, Vietnam, Bresil</p>
         </div>
       </div>
     </div>
@@ -682,9 +682,10 @@
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const darkModeQuery = window.matchMedia('(prefers-color-scheme: dark)');
 
-  // ISO_A2 des pays deja visites / a visiter (dataset Natural Earth 110m)
-  const visitedISO = ['FR', 'GB', 'ES', 'IT', 'BE', 'MA', 'DE', 'ID', 'US', 'ZA', 'JP', 'KR'];
-  const wishlistISO = ['CA', 'CN', 'NG', 'IN', 'VN'];
+  // ADM0_A3 des pays deja visites / a visiter (dataset Natural Earth 110m).
+  // ISO_A2 est peu fiable ici: la France y vaut "-99" (bizarrerie connue de ce jeu de donnees).
+  const visitedISO = ['FRA', 'GBR', 'ESP', 'ITA', 'BEL', 'MAR', 'DEU', 'IDN', 'USA', 'ZAF', 'JPN', 'KOR'];
+  const wishlistISO = ['CAN', 'CHN', 'NGA', 'IND', 'VNM', 'BRA'];
 
   // Trop petits pour exister dans le dataset 110m: gardes en points
   const extraPoints = [
@@ -700,6 +701,7 @@
       base: dark ? 'rgba(255,255,255,0.06)' : 'rgba(20,21,26,0.045)',
       stroke: dark ? 'rgba(255,255,255,0.22)' : 'rgba(20,21,26,0.2)',
       globeColor: dark ? 0x1a1b1f : 0xe4e3df,
+      atmosphere: dark ? '#6fa8e0' : '#275f97',
     };
   }
 
@@ -712,14 +714,15 @@
     .height(initialWidth)
     .globeImageUrl(null)
     .backgroundColor('rgba(0,0,0,0)')
-    .showAtmosphere(false)
+    .showAtmosphere(true)
+    .atmosphereAltitude(0.18)
     .lineHoverPrecision(0)
-    .polygonsData(countries.features.filter(d => d.properties.ISO_A2 !== 'AQ'))
+    .polygonsData(countries.features.filter(d => d.properties.ADM0_A3 !== 'ATA'))
     .polygonAltitude(0.008)
     .polygonSideColor(() => 'rgba(0,0,0,0)')
     .polygonLabel(({ properties: d }) => {
-      const status = visitedISO.includes(d.ISO_A2) ? ' &middot; deja visite'
-        : wishlistISO.includes(d.ISO_A2) ? ' &middot; envie d\'y aller' : '';
+      const status = visitedISO.includes(d.ADM0_A3) ? ' &middot; deja visite'
+        : wishlistISO.includes(d.ADM0_A3) ? ' &middot; a visiter' : '';
       return `<div style="font-family:Manrope,sans-serif;font-size:12px;padding:3px 8px;">${d.NAME}${status}</div>`;
     })
     .pointsData(extraPoints)
@@ -734,11 +737,18 @@
     const dark = darkModeQuery.matches;
     const c = colors(dark);
     globe
-      .polygonCapColor(feat => visitedISO.includes(feat.properties.ISO_A2) ? c.visited
-        : wishlistISO.includes(feat.properties.ISO_A2) ? c.wishlist : c.base)
+      .polygonCapColor(feat => visitedISO.includes(feat.properties.ADM0_A3) ? c.visited
+        : wishlistISO.includes(feat.properties.ADM0_A3) ? c.wishlist : c.base)
       .polygonStrokeColor(() => c.stroke)
-      .pointColor(() => c.visited);
-    if (globe.globeMaterial()) globe.globeMaterial().color.set(c.globeColor);
+      .pointColor(() => c.visited)
+      .atmosphereColor(c.atmosphere)
+      .atmosphereAltitude(0.18);
+    const mat = globe.globeMaterial();
+    if (mat) {
+      mat.color.set(c.globeColor);
+      mat.transparent = true;
+      mat.opacity = 0.85;
+    }
   }
   applyColors();
   darkModeQuery.addEventListener('change', applyColors);
