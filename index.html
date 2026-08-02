@@ -59,6 +59,7 @@
       --dark: #111318;
       --radius: 8px;
       --container: 980px;
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
       --bg-glow: rgba(39,95,151,0.10);
       /* bandeau HEC toujours sombre, meme en light mode: tokens fixes plutot que hex en dur */
       --hec-fg: #f5f4f1;
@@ -108,7 +109,7 @@
     .reveal {
       opacity: 0;
       transform: translateY(14px);
-      transition: opacity 0.5s ease, transform 0.5s ease;
+      transition: opacity 380ms var(--ease-out), transform 380ms var(--ease-out);
     }
     .reveal.in { opacity: 1; transform: translateY(0); }
 
@@ -129,6 +130,8 @@
     @media (prefers-reduced-motion: reduce) {
       .reveal { opacity: 1; transform: none; transition: none; }
       .nav-menu { transition: none; }
+      .globe-wrap { transition: none; }
+      .link-card:hover .link-arrow { transform: none; }
     }
 
     /* NAV */
@@ -147,14 +150,12 @@
       font-size: 0.84rem; font-weight: 500; color: var(--mid); text-decoration: none;
       transition: color 150ms ease-out;
     }
-    .nav-links a:hover { color: var(--ink); }
     .nav-links .nav-cv {
       color: var(--white); background: var(--accent-strong);
       padding: 12px 18px; border-radius: var(--radius);
       display: inline-flex; align-items: center; min-height: 44px;
       transition: opacity 150ms ease-out, transform 120ms ease-out;
     }
-    .nav-links .nav-cv:hover { opacity: 0.85; color: var(--white); }
     .nav-links .nav-cv:active { transform: scale(0.97); }
 
     .nav-toggle {
@@ -164,7 +165,6 @@
       background: transparent; border: 1px solid var(--border); border-radius: var(--radius);
       color: var(--ink); cursor: pointer;
     }
-    .nav-toggle:hover { border-color: var(--mid); }
 
     .nav-menu {
       display: grid;
@@ -195,7 +195,6 @@
         transition: color 150ms ease-out;
       }
       .nav-menu a:last-child { border-bottom: none; }
-      .nav-menu a:hover { color: var(--ink); }
     }
 
     /* HERO */
@@ -245,9 +244,7 @@
     }
     .btn:active { transform: scale(0.98); }
     .btn-primary { background: var(--accent-strong); color: var(--white); }
-    .btn-primary:hover { opacity: 0.86; }
     .btn-outline { background: transparent; color: var(--accent); border-color: var(--accent); }
-    .btn-outline:hover { opacity: 0.8; }
 
     @media (max-width: 680px) {
       .hero { text-align: center; }
@@ -359,7 +356,13 @@
       margin: 0 auto;
       overflow: hidden;
       border-radius: var(--radius);
+      -webkit-mask-image: radial-gradient(circle at center, black 58%, transparent 92%);
+      mask-image: radial-gradient(circle at center, black 58%, transparent 92%);
+      opacity: 0;
+      transform: scale(0.95);
+      transition: opacity 450ms var(--ease-out), transform 450ms var(--ease-out);
     }
+    .globe-wrap.loaded { opacity: 1; transform: scale(1); }
     .globe-wrap canvas { width: 100%; height: 100%; touch-action: none; }
     .voyages-legend { display: flex; flex-direction: column; gap: 22px; }
     .voyages-label {
@@ -393,7 +396,6 @@
       text-decoration: none; color: var(--ink);
       transition: background 150ms ease-out, transform 120ms ease-out;
     }
-    .link-card:hover { background: var(--bg); }
     .link-card:active { transform: scale(0.98); }
     .link-card-wide { grid-column: 1 / -1; }
 
@@ -401,7 +403,6 @@
     .link-title { font-size: 0.88rem; font-weight: 700; color: var(--ink); margin-bottom: 2px; }
     .link-sub { font-size: 0.76rem; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .link-arrow { color: var(--muted); flex-shrink: 0; transition: color 150ms ease-out, transform 150ms ease-out; }
-    .link-card:hover .link-arrow { color: var(--accent); transform: translateX(2px); }
 
     @media (max-width: 620px) {
       .links-grid { grid-template-columns: 1fr; }
@@ -416,10 +417,24 @@
     .footer-name { font-size: 0.86rem; color: var(--ink); font-weight: 600; }
     .footer-meta { font-size: 0.8rem; color: var(--muted); }
     .footer-meta a { color: var(--muted); text-decoration: underline; text-underline-offset: 2px; transition: color 150ms ease-out; }
-    .footer-meta a:hover { color: var(--ink); }
 
     @media (max-width: 620px) {
       .footer { flex-direction: column; text-align: center; }
+    }
+
+    /* HOVER: gate derriere pointer:fine pour eviter les etats "colles" au tap sur mobile */
+    @media (hover: hover) and (pointer: fine) {
+      .nav-links a:hover { color: var(--ink); }
+      .nav-links .nav-cv:hover { opacity: 0.85; color: var(--white); }
+      .nav-toggle:hover { border-color: var(--mid); }
+      .btn-primary:hover { opacity: 0.86; }
+      .btn-outline:hover { opacity: 0.8; }
+      .link-card:hover { background: var(--bg); }
+      .link-card:hover .link-arrow { color: var(--accent); transform: translateX(2px); }
+      .footer-meta a:hover { color: var(--ink); }
+    }
+    @media (max-width: 620px) and (hover: hover) and (pointer: fine) {
+      .nav-menu a:hover { color: var(--ink); }
     }
   </style>
 </head>
@@ -753,6 +768,7 @@
   }
   applyColors();
   darkModeQuery.addEventListener('change', applyColors);
+  container.parentElement.classList.add('loaded');
 
   // Rotation lente automatique, en pause des que l'utilisateur interagit
   const controls = globe.controls();
