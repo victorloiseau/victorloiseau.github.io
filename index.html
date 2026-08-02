@@ -127,6 +127,7 @@
 
     @media (prefers-reduced-motion: reduce) {
       .reveal { opacity: 1; transform: none; transition: none; }
+      .nav-menu { transition: none; }
     }
 
     /* NAV */
@@ -143,14 +144,17 @@
     .nav-links { display: flex; align-items: center; gap: 28px; }
     .nav-links a {
       font-size: 0.84rem; font-weight: 500; color: var(--mid); text-decoration: none;
+      transition: color 150ms ease-out;
     }
     .nav-links a:hover { color: var(--ink); }
     .nav-links .nav-cv {
       color: var(--white); background: var(--accent-strong);
       padding: 12px 18px; border-radius: var(--radius);
       display: inline-flex; align-items: center; min-height: 44px;
+      transition: opacity 150ms ease-out, transform 120ms ease-out;
     }
     .nav-links .nav-cv:hover { opacity: 0.85; color: var(--white); }
+    .nav-links .nav-cv:active { transform: scale(0.97); }
 
     .nav-toggle {
       display: none;
@@ -161,7 +165,18 @@
     }
     .nav-toggle:hover { border-color: var(--mid); }
 
-    .nav-menu { display: none; }
+    .nav-menu {
+      display: grid;
+      grid-template-rows: 0fr;
+      opacity: 0;
+      transition: grid-template-rows 220ms cubic-bezier(0.32, 0.72, 0, 1), opacity 180ms ease-out;
+    }
+    .nav-menu-inner {
+      overflow: hidden;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+    }
 
     @media (max-width: 620px) {
       .nav-links a:not(.nav-cv) { display: none; }
@@ -171,11 +186,12 @@
         border-top: 1px solid var(--border);
         background: var(--bg);
       }
-      .nav-menu.open { display: flex; flex-direction: column; }
+      .nav-menu.open { grid-template-rows: 1fr; opacity: 1; }
       .nav-menu a {
         padding: 14px 24px; font-size: 0.9rem; font-weight: 500;
         color: var(--mid); text-decoration: none;
         border-bottom: 1px solid var(--border);
+        transition: color 150ms ease-out;
       }
       .nav-menu a:last-child { border-bottom: none; }
       .nav-menu a:hover { color: var(--ink); }
@@ -343,16 +359,17 @@
       display: flex; align-items: center; justify-content: space-between;
       gap: 12px; padding: 18px 20px;
       text-decoration: none; color: var(--ink);
-      transition: background 0.15s;
+      transition: background 150ms ease-out, transform 120ms ease-out;
     }
     .link-card:hover { background: var(--bg); }
+    .link-card:active { transform: scale(0.98); }
     .link-card-wide { grid-column: 1 / -1; }
 
     .link-text { min-width: 0; }
     .link-title { font-size: 0.88rem; font-weight: 700; color: var(--ink); margin-bottom: 2px; }
     .link-sub { font-size: 0.76rem; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .link-arrow { color: var(--muted); flex-shrink: 0; }
-    .link-card:hover .link-arrow { color: var(--accent); }
+    .link-arrow { color: var(--muted); flex-shrink: 0; transition: color 150ms ease-out, transform 150ms ease-out; }
+    .link-card:hover .link-arrow { color: var(--accent); transform: translateX(2px); }
 
     @media (max-width: 620px) {
       .links-grid { grid-template-columns: 1fr; }
@@ -366,7 +383,7 @@
     }
     .footer-name { font-size: 0.86rem; color: var(--ink); font-weight: 600; }
     .footer-meta { font-size: 0.8rem; color: var(--muted); }
-    .footer-meta a { color: var(--muted); text-decoration: underline; text-underline-offset: 2px; }
+    .footer-meta a { color: var(--muted); text-decoration: underline; text-underline-offset: 2px; transition: color 150ms ease-out; }
     .footer-meta a:hover { color: var(--ink); }
 
     @media (max-width: 620px) {
@@ -391,8 +408,10 @@
     </button>
   </div>
   <div class="nav-menu" id="navMenu">
-    <a href="#parcours">Parcours</a>
-    <a href="#competences">Competences</a>
+    <div class="nav-menu-inner">
+      <a href="#parcours">Parcours</a>
+      <a href="#competences">Compétences</a>
+    </div>
   </div>
 </nav>
 
