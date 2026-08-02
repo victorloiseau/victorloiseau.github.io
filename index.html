@@ -358,6 +358,7 @@
       aspect-ratio: 1 / 1;
       margin: 0 auto;
       overflow: hidden;
+      border-radius: var(--radius);
     }
     .globe-wrap canvas { width: 100%; height: 100%; touch-action: none; }
     .voyages-legend { display: flex; flex-direction: column; gap: 22px; }
@@ -573,11 +574,11 @@
       <div class="voyages-legend">
         <div>
           <div class="voyages-label"><span class="voyages-dot"></span>Deja visites</div>
-          <p class="voyages-list">France, Royaume-Uni, Espagne, Italie, Belgique, Maroc, Allemagne, Indonesie, La Reunion, Guadeloupe, Etats-Unis, Singapour, Afrique du Sud, Japon, Coree du Sud</p>
+          <p class="voyages-list">France, Royaume-Uni, Espagne, Italie, Belgique, Maroc, Allemagne, Danemark, Indonesie, La Reunion, Guadeloupe, Etats-Unis, Singapour, Afrique du Sud, Japon, Coree du Sud</p>
         </div>
         <div>
           <div class="voyages-label"><span class="voyages-dot voyages-dot-wishlist"></span>A visiter</div>
-          <p class="voyages-list">Canada, Chine, Nigeria, Inde, Vietnam, Bresil</p>
+          <p class="voyages-list">Canada, Chine, Nigeria, Inde, Vietnam, Bresil, Turquie, Emirats arabes unis</p>
         </div>
       </div>
     </div>
@@ -684,8 +685,8 @@
 
   // ADM0_A3 des pays deja visites / a visiter (dataset Natural Earth 110m).
   // ISO_A2 est peu fiable ici: la France y vaut "-99" (bizarrerie connue de ce jeu de donnees).
-  const visitedISO = ['FRA', 'GBR', 'ESP', 'ITA', 'BEL', 'MAR', 'DEU', 'IDN', 'USA', 'ZAF', 'JPN', 'KOR'];
-  const wishlistISO = ['CAN', 'CHN', 'NGA', 'IND', 'VNM', 'BRA'];
+  const visitedISO = ['FRA', 'GBR', 'ESP', 'ITA', 'BEL', 'MAR', 'DEU', 'IDN', 'USA', 'ZAF', 'JPN', 'KOR', 'DNK'];
+  const wishlistISO = ['CAN', 'CHN', 'NGA', 'IND', 'VNM', 'BRA', 'TUR', 'ARE'];
 
   // Trop petits pour exister dans le dataset 110m: gardes en points
   const extraPoints = [
@@ -713,7 +714,7 @@
     .width(initialWidth)
     .height(initialWidth)
     .globeImageUrl(null)
-    .backgroundColor('rgba(0,0,0,0)')
+    .backgroundImageUrl('https://cdn.jsdelivr.net/npm/three-globe/example/img/night-sky.png')
     .showAtmosphere(true)
     .atmosphereAltitude(0.18)
     .lineHoverPrecision(0)
