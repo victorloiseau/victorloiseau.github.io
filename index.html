@@ -53,12 +53,12 @@
       --mid: #45464c;
       --muted: #6c6d72;
       --border: #e4e3df;
-      --accent: #8a5c26;
+      --accent: #275f97;
       --accent-strong: #14151a;
       --dark: #111318;
       --radius: 8px;
       --container: 980px;
-      --bg-glow: rgba(138,92,38,0.10);
+      --bg-glow: rgba(39,95,151,0.10);
       /* bandeau HEC toujours sombre, meme en light mode: tokens fixes plutot que hex en dur */
       --hec-fg: #f5f4f1;
       --hec-fg-dim: #a3a099;
@@ -75,10 +75,10 @@
         --mid: #bdbdb9;
         --muted: #8d8d89;
         --border: #26272c;
-        --accent: #c99a5b;
+        --accent: #6fa8e0;
         --accent-strong: #eeeeec;
         --dark: #050506;
-        --bg-glow: rgba(201,154,91,0.07);
+        --bg-glow: rgba(111,168,224,0.08);
       }
     }
 
@@ -95,7 +95,7 @@
 
     body {
       background-color: var(--bg);
-      background-image: radial-gradient(ellipse 900px 500px at 15% 0px, var(--bg-glow), transparent 60%);
+      background-image: radial-gradient(ellipse 1400px 750px at 15% 0px, var(--bg-glow), transparent 70%);
       background-repeat: no-repeat;
       color: var(--ink);
       font-family: 'Manrope', sans-serif;
@@ -229,8 +229,8 @@
     .btn:active { transform: scale(0.98); }
     .btn-primary { background: var(--accent-strong); color: var(--white); }
     .btn-primary:hover { opacity: 0.86; }
-    .btn-outline { background: transparent; color: var(--ink); border-color: var(--border); }
-    .btn-outline:hover { border-color: var(--mid); }
+    .btn-outline { background: transparent; color: var(--accent); border-color: var(--accent); }
+    .btn-outline:hover { opacity: 0.8; }
 
     @media (max-width: 680px) {
       .hero { text-align: center; }
