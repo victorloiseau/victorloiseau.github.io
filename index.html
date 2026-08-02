@@ -343,6 +343,35 @@
       .skills-groups { grid-template-columns: 1fr; gap: 24px; }
     }
 
+    /* VOYAGES */
+    .voyages-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      align-items: center;
+    }
+    .globe-wrap {
+      position: relative;
+      width: 100%;
+      max-width: 380px;
+      aspect-ratio: 1 / 1;
+      margin: 0 auto;
+    }
+    .globe-wrap canvas { width: 100%; height: 100%; }
+    .voyages-legend { display: flex; flex-direction: column; gap: 22px; }
+    .voyages-label {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 0.78rem; font-weight: 700; color: var(--ink);
+      text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;
+    }
+    .voyages-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; background: var(--accent); }
+    .voyages-dot-wishlist { opacity: 0.4; }
+    .voyages-list { font-size: 0.88rem; color: var(--mid); font-weight: 300; line-height: 1.7; }
+
+    @media (max-width: 680px) {
+      .voyages-layout { grid-template-columns: 1fr; gap: 8px; }
+    }
+
     /* LINKS */
     .links-grid {
       display: grid;
@@ -401,6 +430,7 @@
     <div class="nav-links">
       <a href="#parcours">Parcours</a>
       <a href="#competences">Compétences</a>
+      <a href="#voyages">Voyages</a>
       <a href="#cv" class="nav-cv">CV</a>
     </div>
     <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navMenu" aria-label="Ouvrir le menu">
@@ -411,6 +441,7 @@
     <div class="nav-menu-inner">
       <a href="#parcours">Parcours</a>
       <a href="#competences">Compétences</a>
+      <a href="#voyages">Voyages</a>
     </div>
   </div>
 </nav>
@@ -530,6 +561,26 @@
     </div>
   </section>
 
+  <!-- VOYAGES -->
+  <section id="voyages">
+    <div class="section-head reveal"><h2>Voyages</h2></div>
+    <div class="voyages-layout reveal">
+      <div class="globe-wrap">
+        <canvas id="globeCanvas" role="img" aria-label="Globe montrant les pays deja visites et les pays que je souhaite visiter"></canvas>
+      </div>
+      <div class="voyages-legend">
+        <div>
+          <div class="voyages-label"><span class="voyages-dot"></span>Deja visites</div>
+          <p class="voyages-list">France, Royaume-Uni, Espagne, Italie, Belgique, Maroc, Allemagne, Indonesie (dont Bali), La Reunion, Guadeloupe, Etats-Unis, Singapour, Afrique du Sud, Japon, Coree du Sud</p>
+        </div>
+        <div>
+          <div class="voyages-label"><span class="voyages-dot voyages-dot-wishlist"></span>Envie d'y aller</div>
+          <p class="voyages-list">Canada, Chine, Nigeria, Inde, Vietnam</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- CV & LIENS -->
   <section id="cv">
     <div class="section-head reveal"><h2>CV &amp; liens</h2></div>
@@ -622,6 +673,103 @@
       navToggle.setAttribute('aria-expanded', 'false');
     });
   });
+</script>
+
+<script type="module">
+  import createGlobe from 'https://esm.sh/cobe';
+
+  const canvas = document.getElementById('globeCanvas');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const darkModeQuery = window.matchMedia('(prefers-color-scheme: dark)');
+
+  const visited = [
+    [48.8566, 2.3522],    // France
+    [50.8225, -0.1372],   // Royaume-Uni (Brighton)
+    [40.4168, -3.7038],   // Espagne
+    [41.9028, 12.4964],   // Italie
+    [50.8503, 4.3517],    // Belgique
+    [34.0209, -6.8416],   // Maroc
+    [52.5200, 13.4050],   // Allemagne
+    [-8.3405, 115.0920],  // Bali
+    [-20.8789, 55.4481],  // La Reunion
+    [16.2415, -61.5330],  // Guadeloupe
+    [38.9072, -77.0369],  // Etats-Unis
+    [-6.2088, 106.8456],  // Indonesie
+    [1.3521, 103.8198],   // Singapour
+    [-25.7479, 28.2293],  // Afrique du Sud
+    [35.6762, 139.6503],  // Japon
+    [37.5665, 126.9780],  // Coree du Sud
+  ];
+
+  const wishlist = [
+    [45.5019, -73.5674],  // Canada (Montreal)
+    [39.9042, 116.4074],  // Chine
+    [9.0765, 7.3986],     // Nigeria
+    [28.6139, 77.2090],   // Inde
+    [21.0278, 105.8342],  // Vietnam
+  ];
+
+  let globe, phi = 0, currentWidth = 0;
+
+  function colors(dark) {
+    return {
+      visited: dark ? [0.435, 0.659, 0.878] : [0.153, 0.373, 0.592],
+      wishlist: dark ? [0.32, 0.42, 0.5] : [0.62, 0.74, 0.85],
+      base: dark ? [0.14, 0.15, 0.17] : [0.87, 0.87, 0.88],
+      glow: dark ? [0.18, 0.22, 0.27] : [1, 1, 1],
+    };
+  }
+
+  function initGlobe(width) {
+    const dark = darkModeQuery.matches;
+    const c = colors(dark);
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    currentWidth = width;
+    canvas.width = Math.round(width * dpr);
+    canvas.height = Math.round(width * dpr);
+
+    const markers = [
+      ...visited.map(location => ({ location, size: 0.05, color: c.visited })),
+      ...wishlist.map(location => ({ location, size: 0.035, color: c.wishlist })),
+    ];
+
+    if (globe) globe.destroy();
+
+    globe = createGlobe(canvas, {
+      devicePixelRatio: dpr,
+      width: canvas.width,
+      height: canvas.height,
+      phi: 0,
+      theta: 0.3,
+      dark: dark ? 1 : 0,
+      diffuse: 1.2,
+      scale: 1,
+      mapSamples: 14000,
+      mapBrightness: dark ? 3 : 6,
+      baseColor: c.base,
+      glowColor: c.glow,
+      markerColor: c.visited,
+      markers,
+      onRender: (state) => {
+        if (!reduceMotion) phi += 0.0025;
+        state.phi = phi;
+        state.width = canvas.width;
+        state.height = canvas.height;
+      },
+    });
+  }
+
+  // ResizeObserver garantit une mesure fiable (fonts/layout stabilises),
+  // contrairement a une lecture ponctuelle de getBoundingClientRect au chargement.
+  const ro = new ResizeObserver((entries) => {
+    const width = entries[0].contentRect.width;
+    if (width > 0 && Math.abs(width - currentWidth) > 2) {
+      initGlobe(width);
+    }
+  });
+  ro.observe(canvas.parentElement);
+
+  darkModeQuery.addEventListener('change', () => initGlobe(currentWidth));
 </script>
 </body>
 </html>
