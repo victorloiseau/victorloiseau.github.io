@@ -357,7 +357,7 @@
       aspect-ratio: 1 / 1;
       margin: 0 auto;
     }
-    .globe-wrap canvas { width: 100%; height: 100%; }
+    .globe-wrap canvas { width: 100%; height: 100%; touch-action: none; }
     .voyages-legend { display: flex; flex-direction: column; gap: 22px; }
     .voyages-label {
       display: flex; align-items: center; gap: 8px;
@@ -710,6 +710,8 @@
   ];
 
   let globe, phi = 0, currentWidth = 0;
+  let pointerInteracting = null;
+  let pointerInteractionMovement = 0;
 
   function colors(dark) {
     return {
@@ -751,8 +753,8 @@
       markerColor: c.visited,
       markers,
       onRender: (state) => {
-        if (!reduceMotion) phi += 0.0025;
-        state.phi = phi;
+        if (pointerInteracting === null && !reduceMotion) phi += 0.0025;
+        state.phi = phi + pointerInteractionMovement;
         state.width = canvas.width;
         state.height = canvas.height;
       },
@@ -770,6 +772,29 @@
   ro.observe(canvas.parentElement);
 
   darkModeQuery.addEventListener('change', () => initGlobe(currentWidth));
+
+  // Drag pour tourner le globe manuellement (souris + tactile)
+  canvas.style.cursor = 'grab';
+  canvas.addEventListener('pointerdown', (e) => {
+    pointerInteracting = e.clientX - pointerInteractionMovement * 200;
+    canvas.style.cursor = 'grabbing';
+  });
+  window.addEventListener('pointerup', () => {
+    pointerInteracting = null;
+    canvas.style.cursor = 'grab';
+  });
+  window.addEventListener('pointermove', (e) => {
+    if (pointerInteracting !== null) {
+      const delta = e.clientX - pointerInteracting;
+      pointerInteractionMovement = delta / 200;
+    }
+  });
+  canvas.addEventListener('touchmove', (e) => {
+    if (pointerInteracting !== null && e.touches[0]) {
+      const delta = e.touches[0].clientX - pointerInteracting;
+      pointerInteractionMovement = delta / 200;
+    }
+  }, { passive: true });
 </script>
 </body>
 </html>
