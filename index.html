@@ -70,6 +70,7 @@
       --hec-label: #9a978d;
       --hec-fact-label: #8c8980;
       --hec-row-border: rgba(255,255,255,0.08);
+      --voy-accent: #6fa8e0;
     }
 
     @media (prefers-color-scheme: dark) {
@@ -357,6 +358,11 @@
     }
 
     /* VOYAGES */
+    .voyages-card {
+      background: var(--dark);
+      border-radius: var(--radius);
+      padding: 36px 40px;
+    }
     .voyages-layout {
       display: grid;
       grid-template-columns: minmax(240px, 380px) 1fr;
@@ -371,8 +377,6 @@
       margin: 0 auto;
       overflow: hidden;
       border-radius: var(--radius);
-      -webkit-mask-image: radial-gradient(circle at center, black 58%, transparent 92%);
-      mask-image: radial-gradient(circle at center, black 58%, transparent 92%);
       opacity: 0;
       transform: scale(0.95);
       transition: opacity 450ms var(--ease-out), transform 450ms var(--ease-out);
@@ -382,14 +386,15 @@
     .voyages-legend { display: flex; flex-direction: column; gap: 22px; }
     .voyages-label {
       display: flex; align-items: center; gap: 8px;
-      font-size: 0.78rem; font-weight: 700; color: var(--ink);
+      font-size: 0.78rem; font-weight: 700; color: var(--hec-fg);
       text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;
     }
-    .voyages-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; background: var(--accent); }
-    .voyages-dot-wishlist { opacity: 0.4; }
-    .voyages-list { font-size: 0.88rem; color: var(--mid); font-weight: 300; line-height: 1.7; }
+    .voyages-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; background: var(--voy-accent); }
+    .voyages-dot-wishlist { opacity: 0.45; }
+    .voyages-list { font-size: 0.88rem; color: var(--hec-fg-dim); font-weight: 300; line-height: 1.7; }
 
     @media (max-width: 680px) {
+      .voyages-card { padding: 28px 24px; }
       .voyages-layout { grid-template-columns: 1fr; gap: 8px; }
     }
 
@@ -595,7 +600,8 @@
   <!-- VOYAGES -->
   <section id="voyages">
     <div class="section-head reveal"><h2>Voyages</h2></div>
-    <div class="voyages-layout reveal">
+    <div class="voyages-card reveal">
+    <div class="voyages-layout">
       <div class="globe-wrap">
         <div id="globeCanvas" role="img" aria-label="Globe montrant les frontieres de tous les pays, avec les pays deja visites et les pays que je souhaite visiter colores. Glisser pour faire tourner."></div>
       </div>
@@ -609,6 +615,7 @@
           <p class="voyages-list">Canada, Chine, Nigeria, Inde, Vietnam, Bresil, Turquie, Emirats arabes unis</p>
         </div>
       </div>
+    </div>
     </div>
   </section>
 
@@ -709,7 +716,6 @@
 <script type="module">
   const container = document.getElementById('globeCanvas');
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const darkModeQuery = window.matchMedia('(prefers-color-scheme: dark)');
 
   // ADM0_A3 des pays deja visites / a visiter (dataset Natural Earth 110m).
   // ISO_A2 est peu fiable ici: la France y vaut "-99" (bizarrerie connue de ce jeu de donnees).
@@ -723,16 +729,15 @@
     { lat: 1.3521, lng: 103.8198, name: 'Singapour' },
   ];
 
-  function colors(dark) {
-    return {
-      visited: dark ? '#6fa8e0' : '#275f97',
-      wishlist: dark ? 'rgba(111,168,224,0.5)' : 'rgba(39,95,151,0.4)',
-      base: dark ? 'rgba(255,255,255,0.06)' : 'rgba(20,21,26,0.045)',
-      stroke: dark ? 'rgba(255,255,255,0.22)' : 'rgba(20,21,26,0.2)',
-      globeColor: dark ? 0x1a1b1f : 0xe4e3df,
-      atmosphere: dark ? '#6fa8e0' : '#275f97',
-    };
-  }
+  // La carte Voyages est toujours sombre (comme le bandeau HEC), independamment du theme du site
+  const colors = {
+    visited: '#6fa8e0',
+    wishlist: 'rgba(111,168,224,0.5)',
+    base: 'rgba(255,255,255,0.06)',
+    stroke: 'rgba(255,255,255,0.22)',
+    globeColor: 0x1a1b1f,
+    atmosphere: '#6fa8e0',
+  };
 
   const countries = await fetch('world-countries.geojson').then(res => res.json());
 
@@ -763,8 +768,7 @@
     .pointsMerge(false);
 
   function applyColors() {
-    const dark = darkModeQuery.matches;
-    const c = colors(dark);
+    const c = colors;
     globe
       .polygonCapColor(feat => visitedISO.includes(feat.properties.ADM0_A3) ? c.visited
         : wishlistISO.includes(feat.properties.ADM0_A3) ? c.wishlist : c.base)
@@ -780,7 +784,6 @@
     }
   }
   applyColors();
-  darkModeQuery.addEventListener('change', applyColors);
   container.parentElement.classList.add('loaded');
 
   // Rotation lente automatique, en pause des que l'utilisateur interagit
