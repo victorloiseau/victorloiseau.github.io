@@ -22,7 +22,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@600;700&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
-  <script src="https://cdn.jsdelivr.net/npm/globe.gl" defer></script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -121,6 +120,7 @@
     .timeline-item.reveal:nth-child(2) { transition-delay: 70ms; }
     .timeline-item.reveal:nth-child(3) { transition-delay: 140ms; }
     .timeline-item.reveal:nth-child(4) { transition-delay: 210ms; }
+    .timeline-item.reveal:nth-child(5) { transition-delay: 280ms; }
 
     .skills-groups > .reveal:nth-child(2) { transition-delay: 90ms; }
     .skills-groups > .reveal:nth-child(3) { transition-delay: 180ms; }
@@ -548,6 +548,14 @@
     <div class="timeline-list">
 
       <div class="timeline-item reveal">
+        <div class="tl-date">Juillet 2026</div>
+        <div>
+          <div class="tl-title">Certification Nous Cartons, commerces de proximité</div>
+          <div class="tl-sub">Vérification d'âge pour la vente d'alcool, de tabac et de loterie (CSMOCA). Reconnue dans le commerce de détail au Québec.</div>
+        </div>
+      </div>
+
+      <div class="timeline-item reveal">
         <div class="tl-date">Juin 2026</div>
         <div>
           <div class="tl-title">Baccalauréat général, mention Bien</div>
@@ -746,91 +754,121 @@
 </script>
 
 <script type="module">
+  // Le globe (globe.gl/three.js + geojson + fond etoile, ~2 Mo) n'est charge
+  // que lorsque la section Voyages approche du viewport, pas au chargement de la page.
   const container = document.getElementById('globeCanvas');
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // ADM0_A3 des pays déjà visités / à visiter (dataset Natural Earth 110m).
-  // ISO_A2 est peu fiable ici: la France y vaut "-99" (bizarrerie connue de ce jeu de donnees).
-  const visitedISO = ['FRA', 'GBR', 'ESP', 'ITA', 'BEL', 'MAR', 'DEU', 'IDN', 'USA', 'ZAF', 'JPN', 'KOR', 'DNK'];
-  const wishlistISO = ['CAN', 'CHN', 'NGA', 'IND', 'VNM', 'BRA', 'TUR', 'ARE'];
-
-  // Trop petits pour exister dans le dataset 110m: gardes en points
-  const extraPoints = [
-    { lat: -20.8789, lng: 55.4481, name: 'La Réunion' },
-    { lat: 16.2415, lng: -61.5330, name: 'Guadeloupe' },
-    { lat: 1.3521, lng: 103.8198, name: 'Singapour' },
-  ];
-
-  // La carte Voyages est toujours sombre (comme le bandeau HEC), independamment du theme du site
-  const colors = {
-    visited: '#6fa8e0',
-    wishlist: 'rgba(111,168,224,0.5)',
-    base: 'rgba(255,255,255,0.06)',
-    stroke: 'rgba(255,255,255,0.22)',
-    globeColor: 0x1a1b1f,
-    atmosphere: '#6fa8e0',
-  };
-
-  const countries = await fetch('world-countries.geojson').then(res => res.json());
-
-  const initialWidth = container.parentElement.getBoundingClientRect().width || 380;
-
-  const globe = new Globe(container)
-    .width(initialWidth)
-    .height(initialWidth)
-    .globeImageUrl(null)
-    .backgroundImageUrl('https://cdn.jsdelivr.net/npm/three-globe/example/img/night-sky.png')
-    .showAtmosphere(true)
-    .atmosphereAltitude(0.18)
-    .lineHoverPrecision(0)
-    .polygonsData(countries.features.filter(d => d.properties.ADM0_A3 !== 'ATA'))
-    .polygonAltitude(0.008)
-    .polygonSideColor(() => 'rgba(0,0,0,0)')
-    .polygonLabel(({ properties: d }) => {
-      const status = visitedISO.includes(d.ADM0_A3) ? ' &middot; déjà visité'
-        : wishlistISO.includes(d.ADM0_A3) ? ' &middot; à visiter' : '';
-      return `<div style="font-family:Manrope,sans-serif;font-size:12px;padding:3px 8px;">${d.NAME}${status}</div>`;
-    })
-    .pointsData(extraPoints)
-    .pointLat('lat')
-    .pointLng('lng')
-    .pointLabel('name')
-    .pointRadius(0.35)
-    .pointAltitude(0.008)
-    .pointsMerge(false);
-
-  function applyColors() {
-    const c = colors;
-    globe
-      .polygonCapColor(feat => visitedISO.includes(feat.properties.ADM0_A3) ? c.visited
-        : wishlistISO.includes(feat.properties.ADM0_A3) ? c.wishlist : c.base)
-      .polygonStrokeColor(() => c.stroke)
-      .pointColor(() => c.visited)
-      .atmosphereColor(c.atmosphere)
-      .atmosphereAltitude(0.18);
-    const mat = globe.globeMaterial();
-    if (mat) {
-      mat.color.set(c.globeColor);
-      mat.transparent = true;
-      mat.opacity = 0.85;
-    }
+  function loadScript(src) {
+    return new Promise((resolve, reject) => {
+      const s = document.createElement('script');
+      s.src = src;
+      s.onload = resolve;
+      s.onerror = reject;
+      document.head.appendChild(s);
+    });
   }
-  applyColors();
-  container.parentElement.classList.add('loaded');
 
-  // Rotation lente automatique, en pause des que l'utilisateur interagit
-  const controls = globe.controls();
-  controls.enableZoom = false;
-  controls.autoRotate = !reduceMotion;
-  controls.autoRotateSpeed = 0.4;
-  controls.addEventListener('start', () => { controls.autoRotate = false; });
-  controls.addEventListener('end', () => { controls.autoRotate = !reduceMotion; });
+  let started = false;
+  async function initGlobe() {
+    if (started) return;
+    started = true;
 
-  const ro = new ResizeObserver((entries) => {
-    const width = entries[0].contentRect.width;
-    if (width > 0) globe.width(width).height(width);
-  });
-  ro.observe(container);
+    await loadScript('https://cdn.jsdelivr.net/npm/globe.gl');
+
+    // ADM0_A3 des pays déjà visités / à visiter (dataset Natural Earth 110m).
+    // ISO_A2 est peu fiable ici: la France y vaut "-99" (bizarrerie connue de ce jeu de donnees).
+    const visitedISO = ['FRA', 'GBR', 'ESP', 'ITA', 'BEL', 'MAR', 'DEU', 'IDN', 'USA', 'ZAF', 'JPN', 'KOR', 'DNK'];
+    const wishlistISO = ['CAN', 'CHN', 'NGA', 'IND', 'VNM', 'BRA', 'TUR', 'ARE'];
+
+    // Trop petits pour exister dans le dataset 110m: gardes en points
+    const extraPoints = [
+      { lat: -20.8789, lng: 55.4481, name: 'La Réunion' },
+      { lat: 16.2415, lng: -61.5330, name: 'Guadeloupe' },
+      { lat: 1.3521, lng: 103.8198, name: 'Singapour' },
+    ];
+
+    // La carte Voyages est toujours sombre (comme le bandeau HEC), independamment du theme du site
+    const colors = {
+      visited: '#6fa8e0',
+      wishlist: 'rgba(111,168,224,0.5)',
+      base: 'rgba(255,255,255,0.06)',
+      stroke: 'rgba(255,255,255,0.22)',
+      globeColor: 0x1a1b1f,
+      atmosphere: '#6fa8e0',
+    };
+
+    const countries = await fetch('world-countries.geojson').then(res => res.json());
+
+    const initialWidth = container.parentElement.getBoundingClientRect().width || 380;
+
+    const globe = new Globe(container)
+      .width(initialWidth)
+      .height(initialWidth)
+      .globeImageUrl(null)
+      .backgroundImageUrl('https://cdn.jsdelivr.net/npm/three-globe/example/img/night-sky.png')
+      .showAtmosphere(true)
+      .atmosphereAltitude(0.18)
+      .lineHoverPrecision(0)
+      .polygonsData(countries.features.filter(d => d.properties.ADM0_A3 !== 'ATA'))
+      .polygonAltitude(0.008)
+      .polygonSideColor(() => 'rgba(0,0,0,0)')
+      .polygonLabel(({ properties: d }) => {
+        const status = visitedISO.includes(d.ADM0_A3) ? ' &middot; déjà visité'
+          : wishlistISO.includes(d.ADM0_A3) ? ' &middot; à visiter' : '';
+        return `<div style="font-family:Manrope,sans-serif;font-size:12px;padding:3px 8px;">${d.NAME}${status}</div>`;
+      })
+      .pointsData(extraPoints)
+      .pointLat('lat')
+      .pointLng('lng')
+      .pointLabel('name')
+      .pointRadius(0.35)
+      .pointAltitude(0.008)
+      .pointsMerge(false);
+
+    function applyColors() {
+      const c = colors;
+      globe
+        .polygonCapColor(feat => visitedISO.includes(feat.properties.ADM0_A3) ? c.visited
+          : wishlistISO.includes(feat.properties.ADM0_A3) ? c.wishlist : c.base)
+        .polygonStrokeColor(() => c.stroke)
+        .pointColor(() => c.visited)
+        .atmosphereColor(c.atmosphere)
+        .atmosphereAltitude(0.18);
+      const mat = globe.globeMaterial();
+      if (mat) {
+        mat.color.set(c.globeColor);
+        mat.transparent = true;
+        mat.opacity = 0.85;
+      }
+    }
+    applyColors();
+    container.parentElement.classList.add('loaded');
+
+    // Rotation lente automatique, en pause des que l'utilisateur interagit
+    const controls = globe.controls();
+    controls.enableZoom = false;
+    controls.autoRotate = !reduceMotion;
+    controls.autoRotateSpeed = 0.4;
+    controls.addEventListener('start', () => { controls.autoRotate = false; });
+    controls.addEventListener('end', () => { controls.autoRotate = !reduceMotion; });
+
+    const ro = new ResizeObserver((entries) => {
+      const width = entries[0].contentRect.width;
+      if (width > 0) globe.width(width).height(width);
+    });
+    ro.observe(container);
+  }
+
+  const sectionObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        initGlobe();
+        sectionObserver.disconnect();
+      }
+    });
+  }, { rootMargin: '400px 0px' });
+  sectionObserver.observe(document.getElementById('voyages'));
 </script>
 </body>
 </html>
