@@ -272,11 +272,19 @@
     /* SECTIONS */
     section { padding: 52px 0; border-bottom: 1px solid var(--border); }
     section:last-of-type { border-bottom: none; }
+    /* les sections encadrant une carte sombre (HEC, Voyages) n'ont pas besoin d'un trait en plus:
+       le contraste de la carte fait deja office de rupture visuelle */
+    #parcours, #hec, #competences, #voyages { border-bottom: none; }
 
     .section-head { margin-bottom: 28px; }
     .section-head h2 {
       font-size: 0.78rem; font-weight: 700; letter-spacing: 0.6px;
       text-transform: uppercase; color: var(--muted);
+    }
+    .section-head h2 .amp {
+      font-family: 'Source Serif 4', serif;
+      font-style: italic; font-weight: 400;
+      font-size: 1.15em;
     }
 
     /* ABOUT */
@@ -390,7 +398,7 @@
       font-size: 0.78rem; font-weight: 700; color: var(--hec-fg);
       text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;
     }
-    .voyages-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; background: var(--voy-accent); }
+    .voyages-dot { width: 5px; height: 5px; border-radius: 1px; flex-shrink: 0; background: var(--voy-accent); }
     .voyages-dot-wishlist { opacity: 0.45; }
     .voyages-list { font-size: 0.88rem; color: var(--hec-fg-dim); font-weight: 300; line-height: 1.7; }
 
@@ -456,6 +464,13 @@
     }
     @media (max-width: 620px) and (hover: hover) and (pointer: fine) {
       .nav-menu a:hover { color: var(--ink); }
+    }
+
+    /* FOCUS: anneau sur mesure a la couleur de la marque plutot que le bleu par defaut du navigateur */
+    a:focus-visible, button:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+      border-radius: 4px;
     }
   </style>
 </head>
@@ -622,7 +637,7 @@
 
   <!-- CV & LIENS -->
   <section id="cv">
-    <div class="section-head reveal"><h2>CV &amp; liens</h2></div>
+    <div class="section-head reveal"><h2>CV <span class="amp">&amp;</span> liens</h2></div>
     <div class="links-grid">
 
       <a class="link-card reveal" href="CV_Victor_Loiseau.pdf" download="CV_Victor_Loiseau.pdf">
