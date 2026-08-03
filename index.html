@@ -824,6 +824,7 @@
   controls.autoRotate = !reduceMotion;
   controls.autoRotateSpeed = 0.4;
   controls.addEventListener('start', () => { controls.autoRotate = false; });
+  controls.addEventListener('end', () => { controls.autoRotate = !reduceMotion; });
 
   const ro = new ResizeObserver((entries) => {
     const width = entries[0].contentRect.width;
