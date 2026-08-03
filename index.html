@@ -359,7 +359,8 @@
 
     /* VOYAGES */
     .voyages-card {
-      background: var(--dark);
+      /* noir pur, pas var(--dark): doit matcher exactement le fond de la texture night-sky (0,0,0) pour que la jonction avec le globe soit invisible */
+      background: #000;
       border-radius: var(--radius);
       padding: 36px 40px;
     }
