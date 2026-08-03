@@ -273,7 +273,7 @@
     section { padding: 52px 0; border-bottom: 1px solid var(--border); }
     section:last-of-type { border-bottom: none; }
     /* les sections encadrant une carte sombre (HEC, Voyages) n'ont pas besoin d'un trait en plus:
-       le contraste de la carte fait deja office de rupture visuelle */
+       le contraste de la carte fait déjà office de rupture visuelle */
     #parcours, #hec, #competences, #voyages { border-bottom: none; }
 
     .section-head { margin-bottom: 28px; }
@@ -635,16 +635,16 @@
     <div class="voyages-card reveal">
     <div class="voyages-layout">
       <div class="globe-wrap">
-        <div id="globeCanvas" role="img" aria-label="Globe montrant les frontieres de tous les pays, avec les pays deja visites et les pays que je souhaite visiter colores. Glisser pour faire tourner."></div>
+        <div id="globeCanvas" role="img" aria-label="Globe montrant les frontières de tous les pays, avec les pays déjà visités et les pays que je souhaite visiter colorés. Glisser pour faire tourner."></div>
       </div>
       <div class="voyages-legend">
         <div>
           <div class="voyages-label"><span class="voyages-dot"></span>Deja visites</div>
-          <p class="voyages-list">France, Royaume-Uni, Espagne, Italie, Belgique, Maroc, Allemagne, Danemark, Indonesie, La Reunion, Guadeloupe, Etats-Unis, Singapour, Afrique du Sud, Japon, Coree du Sud</p>
+          <p class="voyages-list">France, Royaume-Uni, Espagne, Italie, Belgique, Maroc, Allemagne, Danemark, Indonésie, La Réunion, Guadeloupe, États-Unis, Singapour, Afrique du Sud, Japon, Corée du Sud</p>
         </div>
         <div>
           <div class="voyages-label"><span class="voyages-dot voyages-dot-wishlist"></span>A visiter</div>
-          <p class="voyages-list">Canada, Chine, Nigeria, Inde, Vietnam, Bresil, Turquie, Emirats arabes unis</p>
+          <p class="voyages-list">Canada, Chine, Nigeria, Inde, Vietnam, Brésil, Turquie, Émirats arabes unis</p>
         </div>
       </div>
     </div>
@@ -749,14 +749,14 @@
   const container = document.getElementById('globeCanvas');
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // ADM0_A3 des pays deja visites / a visiter (dataset Natural Earth 110m).
+  // ADM0_A3 des pays déjà visités / à visiter (dataset Natural Earth 110m).
   // ISO_A2 est peu fiable ici: la France y vaut "-99" (bizarrerie connue de ce jeu de donnees).
   const visitedISO = ['FRA', 'GBR', 'ESP', 'ITA', 'BEL', 'MAR', 'DEU', 'IDN', 'USA', 'ZAF', 'JPN', 'KOR', 'DNK'];
   const wishlistISO = ['CAN', 'CHN', 'NGA', 'IND', 'VNM', 'BRA', 'TUR', 'ARE'];
 
   // Trop petits pour exister dans le dataset 110m: gardes en points
   const extraPoints = [
-    { lat: -20.8789, lng: 55.4481, name: 'La Reunion' },
+    { lat: -20.8789, lng: 55.4481, name: 'La Réunion' },
     { lat: 16.2415, lng: -61.5330, name: 'Guadeloupe' },
     { lat: 1.3521, lng: 103.8198, name: 'Singapour' },
   ];
@@ -787,8 +787,8 @@
     .polygonAltitude(0.008)
     .polygonSideColor(() => 'rgba(0,0,0,0)')
     .polygonLabel(({ properties: d }) => {
-      const status = visitedISO.includes(d.ADM0_A3) ? ' &middot; deja visite'
-        : wishlistISO.includes(d.ADM0_A3) ? ' &middot; a visiter' : '';
+      const status = visitedISO.includes(d.ADM0_A3) ? ' &middot; déjà visité'
+        : wishlistISO.includes(d.ADM0_A3) ? ' &middot; à visiter' : '';
       return `<div style="font-family:Manrope,sans-serif;font-size:12px;padding:3px 8px;">${d.NAME}${status}</div>`;
     })
     .pointsData(extraPoints)
