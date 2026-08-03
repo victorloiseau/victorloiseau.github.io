@@ -295,14 +295,30 @@
     .about-text strong { color: var(--ink); font-weight: 600; }
 
     /* TIMELINE */
+    .timeline-list {
+      position: relative;
+      padding-left: 20px;
+    }
+    .timeline-list::before {
+      content: '';
+      position: absolute; left: 0; top: 28px; bottom: 28px; width: 1.5px;
+      background: var(--border);
+    }
     .timeline-item {
       display: grid;
       grid-template-columns: 160px 1fr;
       gap: 24px;
       padding: 20px 0;
+      position: relative;
+    }
+    .timeline-item::before {
+      content: '';
+      position: absolute; left: -20px; top: 24px;
+      width: 9px; height: 9px; border-radius: 50%;
+      background: var(--bg); border: 2px solid var(--accent);
+      z-index: 1;
     }
     .timeline-item:not(:last-child) { border-bottom: 1px solid var(--border); }
-    .timeline-item:first-child { padding-top: 0; }
 
     .tl-date { font-size: 0.82rem; font-weight: 500; color: var(--muted); padding-top: 2px; }
     .tl-title { font-size: 1rem; font-weight: 700; color: var(--ink); margin-bottom: 5px; }
@@ -529,7 +545,7 @@
   <!-- PARCOURS -->
   <section id="parcours">
     <div class="section-head reveal"><h2>Parcours</h2></div>
-    <div>
+    <div class="timeline-list">
 
       <div class="timeline-item reveal">
         <div class="tl-date">Juin 2026</div>
