@@ -289,11 +289,30 @@
     }
 
     /* ABOUT */
+    .about-layout {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 40px;
+      align-items: start;
+    }
     .about-text {
       font-size: 0.98rem; color: var(--mid); line-height: 1.8; font-weight: 300;
       max-width: 68ch;
     }
     .about-text strong { color: var(--ink); font-weight: 600; }
+    .about-photo { width: 200px; flex-shrink: 0; }
+    .about-photo.reveal { transition-delay: 100ms; }
+    .about-photo img {
+      display: block; width: 100%; height: auto;
+      aspect-ratio: 4 / 5; object-fit: cover; object-position: center 20%;
+      mask-image: radial-gradient(ellipse 86% 90% at 50% 52%, #000 60%, transparent 100%);
+      -webkit-mask-image: radial-gradient(ellipse 86% 90% at 50% 52%, #000 60%, transparent 100%);
+    }
+
+    @media (max-width: 680px) {
+      .about-layout { grid-template-columns: 1fr; }
+      .about-photo { width: 160px; margin: 0 auto; order: -1; }
+    }
 
     /* TIMELINE */
     .timeline-list {
@@ -538,9 +557,14 @@
   <!-- A PROPOS -->
   <section id="apropos">
     <div class="section-head reveal"><h2>À propos</h2></div>
-    <p class="about-text reveal">
-      Après un baccalauréat obtenu avec la mention Bien (15,45/20 de moyenne, spécialités Mathématiques et SES), je rejoins l'année préparatoire du <strong>BBA d'HEC Montréal</strong> en août 2026. J'ai grandi à Saint-Maur-des-Fossés, passé deux semaines en immersion totale en anglais à Brighton, et observé le fonctionnement de deux entreprises très différentes, un grand groupe agroalimentaire et une PME. Je m'intéresse à la logistique et au supply chain, la mécanique qui fait tourner les entreprises à l'échelle internationale, un intérêt qui s'étend naturellement à l'intelligence artificielle et aux économies d'Asie du Sud-Est, notamment.
-    </p>
+    <div class="about-layout">
+      <p class="about-text reveal">
+        Après un baccalauréat obtenu avec la mention Bien (15,45/20 de moyenne, spécialités Mathématiques et SES), je rejoins l'année préparatoire du <strong>BBA d'HEC Montréal</strong> en août 2026. J'ai grandi à Saint-Maur-des-Fossés, passé deux semaines en immersion totale en anglais à Brighton, et observé le fonctionnement de deux entreprises très différentes, un grand groupe agroalimentaire et une PME. Je m'intéresse à la logistique et au supply chain, la mécanique qui fait tourner les entreprises à l'échelle internationale, un intérêt qui s'étend naturellement à l'intelligence artificielle et aux économies d'Asie du Sud-Est, notamment.
+      </p>
+      <div class="about-photo reveal">
+        <img src="portrait.jpg" alt="Victor Loiseau" width="474" height="592" loading="lazy">
+      </div>
+    </div>
   </section>
 
   <!-- PARCOURS -->
