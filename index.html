@@ -785,8 +785,8 @@
 </script>
 
 <script type="module">
-  // Le globe (globe.gl/three.js + geojson + fond etoile, ~2 Mo) n'est charge
-  // que lorsque la section Voyages approche du viewport, pas au chargement de la page.
+  // Le globe (globe.gl/three.js + geojson + fond etoile, ~2 Mo) est charge
+  // des le chargement de la page.
   const container = document.getElementById('globeCanvas');
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -891,15 +891,7 @@
     ro.observe(container);
   }
 
-  const sectionObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        initGlobe();
-        sectionObserver.disconnect();
-      }
-    });
-  }, { rootMargin: '400px 0px' });
-  sectionObserver.observe(document.getElementById('voyages'));
+  initGlobe();
 </script>
 </body>
 </html>
