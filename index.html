@@ -696,11 +696,11 @@
       <div class="voyages-legend">
         <div>
           <div class="voyages-label"><span class="voyages-dot"></span>Déjà visités</div>
-          <p class="voyages-list">France, Royaume-Uni, Espagne, Italie, Belgique, Maroc, Allemagne, Danemark, Indonésie, La Réunion, Guadeloupe, États-Unis, Singapour, Afrique du Sud, Japon, Corée du Sud</p>
+          <p class="voyages-list">France, Royaume-Uni, Espagne, Italie, Belgique, Maroc, Allemagne, Danemark, Indonésie, La Réunion, Guadeloupe, États-Unis, Singapour, Afrique du Sud, Japon, Corée du Sud, Canada</p>
         </div>
         <div>
           <div class="voyages-label"><span class="voyages-dot voyages-dot-wishlist"></span>À visiter</div>
-          <p class="voyages-list">Canada, Chine, Nigeria, Inde, Vietnam, Brésil, Turquie, Émirats arabes unis</p>
+          <p class="voyages-list">Chine, Nigeria, Inde, Vietnam, Brésil, Turquie, Émirats arabes unis</p>
         </div>
       </div>
     </div>
@@ -826,8 +826,8 @@
 
     // ADM0_A3 des pays déjà visités / à visiter (dataset Natural Earth 110m).
     // ISO_A2 est peu fiable ici: la France y vaut "-99" (bizarrerie connue de ce jeu de donnees).
-    const visitedISO = ['FRA', 'GBR', 'ESP', 'ITA', 'BEL', 'MAR', 'DEU', 'IDN', 'USA', 'ZAF', 'JPN', 'KOR', 'DNK'];
-    const wishlistISO = ['CAN', 'CHN', 'NGA', 'IND', 'VNM', 'BRA', 'TUR', 'ARE'];
+    const visitedISO = ['FRA', 'GBR', 'ESP', 'ITA', 'BEL', 'MAR', 'DEU', 'IDN', 'USA', 'ZAF', 'JPN', 'KOR', 'DNK', 'CAN'];
+    const wishlistISO = ['CHN', 'NGA', 'IND', 'VNM', 'BRA', 'TUR', 'ARE'];
 
     // Trop petits pour exister dans le dataset 110m: gardes en points
     const extraPoints = [
